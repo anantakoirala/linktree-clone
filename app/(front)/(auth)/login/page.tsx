@@ -23,6 +23,7 @@ const Page = (props: Props) => {
 
   const {
     register,
+    watch,
     formState: { errors },
     handleSubmit,
   } = form;
@@ -64,8 +65,9 @@ const Page = (props: Props) => {
         </div>
         <div className="mt-10">
           <button
-            className="rounded-full w-full p-3 font-bold bg-[#8228D9] hover:bg-[#6c21b3] text-white"
+            className="rounded-full w-full p-3 font-bold bg-[#8228D9] hover:bg-[#6c21b3] text-white disabled:bg-[#EFF0EB] disabled:text-[#A7AAA2]"
             type="submit"
+            disabled={!watch("email") || !watch("password")}
           >
             Log In
           </button>
