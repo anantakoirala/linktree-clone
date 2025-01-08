@@ -1,4 +1,5 @@
 "use client";
+import { X } from "lucide-react";
 import React from "react";
 
 type Props = {};
@@ -69,18 +70,6 @@ const dummyLink = [
     url: "https://www.facebook.com",
     image: "https://picsum.photos/id/8/300/200",
   },
-  {
-    id: 12,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 13,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
 ];
 
 const PreviewSection = (props: Props) => {
@@ -111,13 +100,18 @@ const PreviewSection = (props: Props) => {
               className="rounded-lg h-[30px] aspect-square"
             />
             <div className="absolute w-full">
-              <div className="max-w-[70%] w-full mx-auto text-[10px] text-center">
+              <div className="max-w-[70%] w-full mx-auto text-[14px] text-center">
                 {link.name}
               </div>
             </div>
           </a>
         ))}
         <div className="pb-12"></div>
+      </div>
+      <div className="fixed bottom-16 w-full flex items-center justify-center z-50">
+        <button className="md:hidden flex items-center text-[17px] rounded-full font-semibold px-2 py-2 bg-gray-400 gap-2">
+          <X />
+        </button>
       </div>
     </div>
   );
