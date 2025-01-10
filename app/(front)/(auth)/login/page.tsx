@@ -4,6 +4,10 @@ import Link from "next/link";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { restApi } from "@/api";
+import { useRouter } from "next/navigation";
+import { handleApiError } from "@/lib/handleApiError";
 
 type Props = {};
 
@@ -13,6 +17,7 @@ const formSchema = z.object({
 });
 
 const Page = (props: Props) => {
+  const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,7 +34,15 @@ const Page = (props: Props) => {
   } = form;
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log("data", data);
+    try {
+      const response = await restApi.post("/api/v1/auth/login", data);
+      toast.success(response?.data?.message);
+      route.push("/admin");
+
+      console.log("data", data);
+    } catch (error) {
+      handleApiError(error);
+    }
   };
   return (
     <div className="mt-10 ">

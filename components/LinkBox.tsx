@@ -1,23 +1,35 @@
 "use client";
+import { setIdForNameEdit, setIdForUrlEdit } from "@/redux/link/linkSlice";
+import { Link } from "@/types/Link";
 import { Bell, Image, Pencil, Trash, X } from "lucide-react";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 type Props = {
-  link: { id: number; name: string; url: string; image: string };
+  link: Link;
+  idForNameEdit: string;
+  idForUrlEdit: string;
 };
 
-const LinkBox = ({ link }: Props) => {
+const LinkBox = ({ link, idForNameEdit, idForUrlEdit }: Props) => {
+  const dispatch = useDispatch();
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isImage, setIsImage] = useState<boolean>(false);
-  const [idForNameEdit, setIdForNameEdit] = useState<number | null>();
-  const [idForUrlEdit, setIdForUrlEdit] = useState<number | null>();
+
+  const setIdForEdit = (_id: string, type: "Name" | "Url") => {
+    if (type === "Name") {
+      dispatch(setIdForNameEdit(_id));
+    } else {
+      dispatch(setIdForUrlEdit(_id));
+    }
+  };
 
   return (
     <div className="w-full bg-white rounded-3xl mb-3">
       <div className="px-8 py-5 ">
         <div className="flex items-center justify-between py-1">
           <div className="flex items-center w-full">
-            {idForNameEdit === link.id ? (
+            {idForNameEdit === link._id ? (
               <>
                 <input
                   type="text"
@@ -36,7 +48,7 @@ const LinkBox = ({ link }: Props) => {
                     size={17}
                     className="cursor-pointer"
                     color="#676B5F"
-                    onClick={() => setIdForNameEdit(link.id)}
+                    onClick={() => setIdForEdit(link._id, "Name")}
                   />
                 </div>
               </>
@@ -52,7 +64,7 @@ const LinkBox = ({ link }: Props) => {
         </div>
         <div className="flex items-center justify-between py-1">
           <div className="flex items-center w-full">
-            {idForUrlEdit === link.id ? (
+            {idForUrlEdit === link._id ? (
               <>
                 <input
                   type="text"
@@ -71,7 +83,7 @@ const LinkBox = ({ link }: Props) => {
                     size={17}
                     className="cursor-pointer min-w-[17px]"
                     color="#676B5F"
-                    onClick={() => setIdForUrlEdit(link.id)}
+                    onClick={() => setIdForEdit(link._id, "Url")}
                   />
                 </div>
               </>

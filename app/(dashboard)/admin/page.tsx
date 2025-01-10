@@ -1,10 +1,19 @@
 "use client";
 import HookFormError from "@/components/HookFormError";
 import LinkBox from "@/components/LinkBox";
+import { handleApiError } from "@/lib/handleApiError";
+import {
+  useCreateLinkMutation,
+  useLazyGetAllLinksQuery,
+} from "@/redux/link/linkApi";
+import { RootState } from "@/redux/store";
+import { Link } from "@/types/Link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { z } from "zod";
 
 type Props = {};
@@ -30,6 +39,15 @@ const formSchema = z.object({
 });
 
 const Page = (props: Props) => {
+  const [trigger, { data: allLinks, isSuccess: getAllLinkSuccess }] =
+    useLazyGetAllLinksQuery();
+
+  const { links, idForNameEdit, idForUrlEdit } = useSelector(
+    (state: RootState) => state.link
+  );
+
+  const [createLink, { isError, isLoading, isSuccess }] =
+    useCreateLinkMutation();
   const [addClicked, setAddClicked] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,13 +60,27 @@ const Page = (props: Props) => {
     watch,
   } = form;
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("data", data);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const response = await createLink(data).unwrap(); // Unwrap to handle success or error
+
+      // Display success toast
+      setAddClicked(false);
+      toast.success("link created successfully!");
+    } catch (error: any) {
+      // Display error toast
+      handleApiError(error);
+    }
   };
+
+  useEffect(() => {
+    trigger({});
+  }, []);
 
   return (
     <div className="flex ">
       {/* add link button */}
+
       <div className="flex flex-col w-full">
         <button
           className="w-full rounded-full h-12 bg-[#8228D9] hover:bg-[#6c21b3] text-white flex text-[15px] font-semibold items-center justify-center flex-row"
@@ -109,8 +141,13 @@ const Page = (props: Props) => {
         )}
 
         <div className="mt-4">
-          {dummyLink.map((link: any) => (
-            <LinkBox link={link} key={link.id} />
+          {links.map((link: Link) => (
+            <LinkBox
+              link={link}
+              key={link._id}
+              idForNameEdit={idForNameEdit}
+              idForUrlEdit={idForUrlEdit}
+            />
           ))}
         </div>
       </div>
