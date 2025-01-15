@@ -1,8 +1,12 @@
 import { RootState } from "@/redux/store";
 import { Link as LinkType } from "@/types/Link";
 import Link from "next/link";
-import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { cn } from "@/lib/utils";
+import { AuthContext } from "@/contextprovider/AuthProvider";
+import { Theme } from "@/types/Theme";
 
 type Props = {};
 const dummyLink = [
@@ -42,10 +46,36 @@ const dummyLink = [
     url: "https://www.facebook.com",
     image: "https://picsum.photos/id/8/300/200",
   },
+  {
+    id: 7,
+    name: "facebook",
+    url: "https://www.facebook.com",
+    image: "https://picsum.photos/id/8/300/200",
+  },
+  {
+    id: 8,
+    name: "facebook",
+    url: "https://www.facebook.com",
+    image: "https://picsum.photos/id/8/300/200",
+  },
+  {
+    id: 9,
+    name: "facebook",
+    url: "https://www.facebook.com",
+    image: "https://picsum.photos/id/8/300/200",
+  },
 ];
 
 const MobileView = (props: Props) => {
   const { links } = useSelector((state: RootState) => state.link);
+  const { image, username, theme } = useSelector(
+    (state: RootState) => state.profile
+  );
+  const [parsedTheme, setParsedTheme] = useState<Theme>();
+
+  useEffect(() => {
+    setParsedTheme(JSON.parse(theme));
+  }, [theme]);
   return (
     <>
       {/* flowbite mockup */}
@@ -74,54 +104,138 @@ const MobileView = (props: Props) => {
         <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -start-[17px] top-[124px] rounded-s-lg"></div>
         <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -start-[17px] top-[178px] rounded-s-lg"></div>
         <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -end-[17px] top-[142px] rounded-e-lg"></div>
-        <div className="rounded-[2rem] overflow-hidden w-[272px] h-[572px] bg-white dark:bg-gray-800 relative">
+        <div
+          className={`rounded-[2rem] overflow-hidden w-[272px] h-[572px] ${parsedTheme?.color} dark:bg-gray-800 relative`}
+        >
           {/* Background Image */}
-          <img
+          {/* <img
             src="/background-mobile-hires.png"
             className="dark:hidden w-[272px] h-[572px] absolute z-0"
             alt=""
-          />
+          /> */}
 
           {/* Content Container */}
           <div className="h-full mx-auto w-full overflow-auto z-10 relative">
             {/* Profile Image */}
-            <img
-              src="https://picsum.photos/id/8/300/320"
-              alt=""
-              className="rounded-full min-w-[60px] w-[60px] mx-auto mt-8"
-            />
+            <div className="flex items-center justify-center mt-10">
+              <span className="relative flex shrink-0 overflow-hidden rounded-full size-20 cursor-pointer ">
+                <img
+                  src={image}
+                  className="h-full w-full object-cover"
+                  alt=""
+                />
+              </span>
+            </div>
             {/* Username */}
-            <div className="text-center text-sm font-semibold mt-4 break-words">
-              @ananta
+            <div
+              className={`text-center text-sm font-semibold mt-2 break-words ${parsedTheme?.text}`}
+            >
+              @{username}
             </div>
             {/* Bio */}
-            <div className="text-center text-[8px] font-semibold mt-2">
+            <div
+              className={`text-center text-[8px] font-semibold mt-1 ${parsedTheme?.text}`}
+            >
               <div className="px-8 break-words">this is bio</div>
             </div>
 
-            {/* Links */}
-            {links.map((link: LinkType) => (
-              <a
-                key={link._id}
-                href={link.url}
-                target="_blank"
-                className="flex items-center relative w-[calc(100%-15px)] mx-auto border bg-white mt-2 p-1 rounded-xl z-20 h-[35px]"
-              >
-                {link.image && (
-                  <img
-                    src={link.image}
-                    alt=""
-                    className="rounded-lg h-[30px] aspect-square"
-                  />
-                )}
+            {/* Tabs */}
+            <div className="w-full flex items-center justify-center mt-2">
+              <Tabs defaultValue="account" className="w-full">
+                <TabsList className="flex justify-center w-fit mx-auto  rounded-full mb-4">
+                  <TabsTrigger
+                    value="account"
+                    className={cn(
+                      "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200",
+                      "data-[state=active]:bg-[#8228D9] data-[state=active]:text-white",
+                      "data-[state=inactive]:text-gray-700"
+                    )}
+                  >
+                    Links
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="password"
+                    className={cn(
+                      "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200",
+                      "data-[state=active]:bg-[#8228D9] data-[state=active]:text-white",
+                      "data-[state=inactive]:text-gray-700"
+                    )}
+                  >
+                    Shop
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="account" className="">
+                  {/* Links */}
+                  <div className="w-full">
+                    {/* {links.map((link: LinkType) => (
+                      <a
+                        key={link._id}
+                        href={link.url}
+                        target="_blank"
+                        className={`flex items-center relative w-[calc(100%-15px)] mx-auto ${parsedTheme?.text} ${parsedTheme?.linkStyle} ${parsedTheme?.boxColor} mt-2 p-1  z-20 h-[35px]`}
+                      >
+                        <img
+                          src={"https://picsum.photos/id/8/300/200"}
+                          alt=""
+                          className="rounded-lg h-[30px] aspect-square"
+                        />
 
-                <div className="absolute w-full">
-                  <div className="max-w-[70%] w-full mx-auto text-[10px] text-center">
-                    {link.name}
+                        <div className="absolute w-full">
+                          <div className="max-w-[70%] w-full mx-auto text-[10px] text-center">
+                            {link.name}
+                          </div>
+                        </div>
+                      </a>
+                    ))} */}
+
+                    {links.map((link: LinkType, index) => (
+                      <div className="relative w-[calc(100%-15px)] h-[42px] mx-auto ">
+                        <div className="w-full h-full absoulte z-20">
+                          <div
+                            className={`flex flex-row items-center justify-around relative ${parsedTheme?.linkStyle} mx-auto z-20 ${parsedTheme?.boxColor} mt-2 px-1 h-full`}
+                          >
+                            <div className="left-1.5 absolute ">
+                              <span
+                                className={`relative flex shrink-0 overflow-hidden ${parsedTheme?.linkStyle} size-8 cursor-pointer `}
+                              >
+                                <img
+                                  src={image}
+                                  className="h-full w-full object-cover"
+                                  alt=""
+                                />
+                              </span>
+                            </div>
+
+                            <div className="">
+                              <div
+                                className={`max-w-[70%] w-full mx-auto text-[10px] ${parsedTheme?.text} text-center  `}
+                              >
+                                youtube
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* Embosed shadow */}
+                        {parsedTheme?.embosedBox && (
+                          <div
+                            className={`absolute ${
+                              index === 0 ? "top-[1.5px]" : "top-[2px]"
+                            } left-0.5 z-10 w-full h-full ${
+                              parsedTheme?.linkStyle
+                            } ${parsedTheme?.embosedBoxColor}`}
+                          ></div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </a>
-            ))}
+                </TabsContent>
+                <TabsContent value="password">
+                  <div className="w-full p-2">ananta</div>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            {/* Links */}
 
             {/* Extra padding for spacing */}
             <div className="pb-12"></div>

@@ -39,12 +39,10 @@ const formSchema = z.object({
 });
 
 const Page = (props: Props) => {
-  const [trigger, { data: allLinks, isSuccess: getAllLinkSuccess }] =
-    useLazyGetAllLinksQuery();
-
   const { links, idForNameEdit, idForUrlEdit } = useSelector(
     (state: RootState) => state.link
   );
+  const { products } = useSelector((state: RootState) => state.shop);
 
   const [createLink, { isError, isLoading, isSuccess }] =
     useCreateLinkMutation();
@@ -72,10 +70,6 @@ const Page = (props: Props) => {
       handleApiError(error);
     }
   };
-
-  useEffect(() => {
-    trigger({});
-  }, []);
 
   return (
     <div className="flex ">

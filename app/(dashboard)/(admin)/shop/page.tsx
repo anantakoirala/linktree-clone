@@ -21,9 +21,19 @@ const Page = (props: Props) => {
   return (
     <>
       <Tabs defaultValue="account" className="w-full">
-        <TabsList>
-          <TabsTrigger value="account">Edit</TabsTrigger>
-          <TabsTrigger value="password">My Products</TabsTrigger>
+        <TabsList className="">
+          <TabsTrigger
+            value="account"
+            className="data-[state=active]:border-b-2 data-[state=active]:border-[#8228D9] data-[state=active]:text-[#8228D9]"
+          >
+            Edit
+          </TabsTrigger>
+          <TabsTrigger
+            value="password"
+            className="data-[state=active]:border-b-2 data-[state=active]:border-[#8228D9] data-[state=active]:text-[#8228D9]"
+          >
+            My Products
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="account" className="w-full   mt-5">
           <div className="w-full flex flex-col">
@@ -36,6 +46,11 @@ const Page = (props: Props) => {
               <Plus size={17} className="mr-0.5 font-semibold" />{" "}
               <span> Add Link</span>
             </button>
+            <div className="w-full flex flex-col gap-3 mt-5 ">
+              {products.map((product: Product, index) => (
+                <ProductList product={product} key={index} />
+              ))}
+            </div>
           </div>
         </TabsContent>
         <TabsContent value="password" className="w-full bg-yellow-200 mt-5">
@@ -43,11 +58,6 @@ const Page = (props: Props) => {
         </TabsContent>
       </Tabs>
       {open && <AddProductModal open={open} setOpen={setOpen} />}
-      <div className="w-full flex flex-col gap-3 mt-5 ">
-        {products.map((product: Product, index) => (
-          <ProductList product={product} key={index} />
-        ))}
-      </div>
     </>
   );
 };

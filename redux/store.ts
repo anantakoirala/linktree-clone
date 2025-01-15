@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api";
 import { linkSlice } from "./link/linkSlice";
 import { shopSlice } from "./shop/shopSlice";
+import { profileSlice } from "./profile/profileSlice";
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     [linkSlice.name]: linkSlice.reducer,
     [shopSlice.name]: shopSlice.reducer,
+    [profileSlice.name]: profileSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
