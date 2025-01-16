@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { generateRandomString } from "@/lib/generateRandomStrings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import "react-image-crop/dist/ReactCrop.css";
 
 type Props = {
   open: boolean;
@@ -28,6 +29,8 @@ type Props = {
   croppedImageUrl: string;
   setCroppedImageUrl: React.SetStateAction<any>;
   uploadProfileImage?: any;
+  fileName: string;
+  setFileName: React.SetStateAction<any>;
 };
 
 const ImageCropper1 = ({
@@ -36,9 +39,11 @@ const ImageCropper1 = ({
   croppedImageUrl,
   setCroppedImageUrl,
   uploadProfileImage,
+  fileName,
+  setFileName,
 }: Props) => {
   const aspect = 1;
-  const [filename, setFileName] = useState("");
+
   const [crop, setCrop] = React.useState<Crop>();
   const [imgSrc, setImgSrc] = useState("");
 
@@ -75,6 +80,7 @@ const ImageCropper1 = ({
   const onImageLoad = (e: SyntheticEvent<HTMLImageElement>) => {
     if (aspect) {
       const { width, height } = e.currentTarget;
+      console.log("width", width);
       setCrop(centerAspectCrop(width, height, aspect));
     }
   };
@@ -82,30 +88,35 @@ const ImageCropper1 = ({
   async function onCrop() {
     try {
       setCroppedImage(croppedImageUrl);
-      if (croppedImageUrl) {
-        try {
-          // Fetch the cropped image as a blob
-          const response = await fetch(croppedImageUrl);
-          const blob = await response.blob(); // Convert the URL to a Blob
+      if (uploadProfileImage) {
+        if (croppedImageUrl) {
+          try {
+            // Fetch the cropped image as a blob
+            const response = await fetch(croppedImageUrl);
+            const blob = await response.blob(); // Convert the URL to a Blob
 
-          // Log the blob to make sure it's being converted correctly
+            // Log the blob to make sure it's being converted correctly
 
-          const newfile = new File([blob], filename, { type: blob.type });
+            const newfile = new File([blob], fileName, { type: blob.type });
 
-          // Prepare the FormData
-          const formData = new FormData();
-          formData.append("file", newfile); // The 'file' field must match the backend's expected field name
-          formData.append("_id", _id);
+            // Prepare the FormData
+            const formData = new FormData();
+            formData.append("file", newfile); // The 'file' field must match the backend's expected field name
+            formData.append("_id", _id);
 
-          // Send the file to the server
-          uploadProfileImage(formData).unwrap();
-        } catch (error) {
-          console.error("Error uploading file", error);
+            // Send the file to the server
+            uploadProfileImage(formData).unwrap();
+          } catch (error) {
+            console.error("Error uploading file", error);
+          }
         }
+        setOpen(false);
+        setCroppedImageUrl("");
+        setImgSrc("");
+      } else {
+        setOpen(false);
+        setImgSrc("");
       }
-      setOpen(false);
-      setCroppedImageUrl("");
-      setImgSrc("");
     } catch (error) {
       alert("Something went wrong!");
     }

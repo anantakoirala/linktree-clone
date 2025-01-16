@@ -1,154 +1,40 @@
 "use client";
-import React, { useRef, useState } from "react";
-import "react-image-crop/dist/ReactCrop.css";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import ImageCropper1 from "@/components/ImageCropper1";
 import {
-  useUpdateThemeMutation,
+  useUpdateUserProfileMutation,
   useUploadProfileImageMutation,
 } from "@/redux/profile/profileApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { Theme } from "@/types/Theme";
+
+import ThemeSection from "@/components/ThemeSection";
+import { setProfile } from "@/redux/profile/profileSlice";
+import debounce from "lodash.debounce";
 
 type Props = {};
 
-const themes: Theme[] = [
-  {
-    id: 1,
-    color: "bg-white",
-    text: "text-black",
-    name: "Air White",
-    linkStyle: "rounded-md",
-    boxColor: "bg-red-200",
-    embosedBox: false,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 2,
-    color: "bg-[#000957]", // Deep Blue
-    text: "text-white", // White text for contrast
-    name: "Blue Horizon",
-    linkStyle: "rounded-md", // Rounded link style
-    boxColor: "bg-[#344CB7]", // Lighter Blue
-    embosedBox: true,
-    embosedBoxColor: "bg-[#FFEB00]", // Yellow for embossed effect
-  },
-  {
-    id: 3,
-    color: "bg-gradient-to-t from-indigo-500 via-purple-500 to-pink-500",
-    text: "text-black",
-    name: "Purple Pie",
-    linkStyle: "rounded-3xl",
-    boxColor: "bg-orange-300",
-    embosedBox: false,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 4,
-    color: "bg-gradient-to-t from-[#16C47F] via-[#FFD65A] to-[#FF9D23]",
-    text: "text-black", // White text for contrast
-    name: "Tropical Vibes",
-    linkStyle: "rounded-md", // Rounded link style
-    boxColor: "bg-[#FFD65A]", // Soft Yellow
-    embosedBox: true,
-    embosedBoxColor: "bg-[#FF9D23]", // Orange for embossed effect
-  },
-  {
-    id: 5,
-    color: "bg-gradient-to-t from-orange-500 via-green-500 to-red-500",
-    text: "text-white",
-    name: "Traffic Lights",
-    linkStyle: "rounded-3xl",
-    boxColor: "bg-pink-500",
-    embosedBox: true,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 6,
-    color: "bg-gradient-to-b from-blue-800 via-blue-500 to-green-500",
-    text: "text-slate-900",
-    name: "Blue Sky",
-    linkStyle: "rounded-md",
-    boxColor: "bg-lime-200",
-    embosedBox: false,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 7,
-    color: "bg-gradient-to-t from-lime-500 via-indigo-700 to-amber-500",
-    text: "text-white",
-    name: "Soft Horizon",
-    linkStyle: "rounded-xl",
-    boxColor: "bg-purple-300",
-    embosedBox: true,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 8,
-    color: "bg-gradient-to-t from-gray-800 to-emerald-500",
-    text: "text-white",
-    name: "Tinted Lake",
-    linkStyle: "rounded-full bg-transparent border ",
-    boxColor: "",
-    embosedBox: false,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 9,
-    color: "bg-gradient-to-t from-pink-600 via-pink-500 to-pink-300",
-    text: "text-white",
-    name: "Cotton Candy",
-    linkStyle: "rounded-lg",
-    boxColor: "bg-indigo-400",
-    embosedBox: false,
-    embosedBoxColor: "bg-yellow-800",
-  },
-  {
-    id: 10,
-    color: "bg-[#f8d210]",
-    text: "text-white", // White text for contrast
-    name: "Tropical Burst",
-    linkStyle: "rounded-md", // Rounded link style
-    boxColor: "bg-[#f51720]", // Red for the box
-    embosedBox: true,
-    embosedBoxColor: "bg-[#fa26a0]", // Pink for embossed effect
-  },
-  {
-    id: 11,
-    color: "bg-gradient-radial from-[#3d550c] via-[#81b622] to-[#ecf87f]", // Circular gradient from deep green to lime yellow
-    text: "text-black", // Black text for contrast
-    name: "Lush Green",
-    linkStyle: "rounded-lg", // Rounded link style
-    boxColor: "bg-[#59981a]", // Dark green for the box
-    embosedBox: true,
-    embosedBoxColor: "bg-[#81b622]", // Lime green for embossed effect
-  },
-  {
-    id: 12,
-    color: "bg-gradient-to-t from-[#fd7f20] via-[#fc2e20] to-[#fdb750]", // Linear gradient from orange to red, to yellow
-    text: "text-white", // White text for contrast
-    name: "Fiery Blaze",
-    linkStyle: "rounded-3xl", // Rounded link style
-    boxColor: "bg-[#010100]", // Dark background for the box
-    embosedBox: true,
-    embosedBoxColor: "bg-[#fdb750]", // Red for the embossed effect
-  },
-];
-
 const Page = (props: Props) => {
+  const [fileName, setFileName] = useState<string>("");
   const [imgSrc, setImgSrc] = useState("");
+  const [profileTitle, setProfileTitle] = useState<string>("");
+  const [bio, setBio] = useState<string>("");
   const [croppedImageUrl, setCroppedImageUrl] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [cropped, setCropped] = useState<boolean>(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [uploadProfileImage, { isError, isLoading, isSuccess }] =
     useUploadProfileImageMutation();
-  const [
-    updateTheme,
-    { isError: isUpdateThemeError, isLoading: isUpdateThemeLoading },
-  ] = useUpdateThemeMutation();
 
-  const { image } = useSelector((state: RootState) => state.profile);
+  const [updateProfile] = useUpdateUserProfileMutation();
+
+  const {
+    image,
+    username,
+    profile_title,
+    bio: stateBio,
+  } = useSelector((state: RootState) => state.profile);
 
   const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -163,11 +49,44 @@ const Page = (props: Props) => {
     reader.readAsDataURL(file);
   };
 
-  const updateSelectedTheme = (id: number) => {
-    const foundTheme = themes.find((theme) => theme.id === id);
-    console.log("foundTheme", foundTheme);
-    updateTheme({ theme: JSON.stringify(foundTheme) });
+  const saveProfileTitle = useCallback(
+    debounce((title: string) => {
+      updateProfile({
+        field: "profile_title",
+        value: title,
+      });
+    }, 1000),
+    []
+  );
+
+  const saveBio = useCallback(
+    debounce((bio: string) => {
+      updateProfile({
+        field: "bio",
+        value: bio,
+      });
+    }, 1000), // Debounce time is 1000ms (1 second)
+    []
+  );
+
+  const updateProfileTitle = (title: string) => {
+    if (profileTitle.length <= 30) {
+      setProfileTitle(title);
+      saveProfileTitle(title);
+    }
   };
+
+  const updateBio = (bio: string) => {
+    if (bio.length <= 80) {
+      setBio(bio);
+      saveBio(bio);
+    }
+  };
+
+  useEffect(() => {
+    setProfileTitle(profile_title);
+    setBio(stateBio);
+  }, [username, stateBio]);
 
   return (
     <div className="flex ">
@@ -198,13 +117,22 @@ const Page = (props: Props) => {
                 placeholder="Profile Title"
                 type="text"
                 className="w-full bg-[#EFF0EB] text-gray-800 border-2 text-sm rounded-xl py-3.5 px-3 placeholder-gray-500 focus:outline-none"
+                value={profileTitle}
+                maxLength={30}
+                onChange={(e) => updateProfileTitle(e.target.value)}
               />
+              <div className="flex items-center justify-end text-[#676B5F] text-[13px]">
+                {`${profileTitle.length} / 30`}
+              </div>
             </div>
             <textarea
               name=""
               id=""
               placeholder="bio"
               className="w-full mt-4 bg-[#EFF0EB] text-gray-800 border-2 text-sm border-[#EFF0EB] rounded-xl py-3.5 px-3 placeholder-gray-500 resize-none focus:outline-none"
+              onChange={(e) => updateBio(e.target.value)}
+              maxLength={80}
+              value={bio}
             ></textarea>
             <div className="flex items-center justify-end text-[#676B5F] text-[13px]">
               biolength/80
@@ -216,68 +144,7 @@ const Page = (props: Props) => {
           <div className="font-semibold pb-4 mt-20 md:mt-8 text-xl">Themes</div>
           <div className="w-full bg-white rounded-3xl p-6">
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
-              {themes.map((theme: Theme, index) => (
-                <React.Fragment key={index}>
-                  <div onClick={() => updateSelectedTheme(theme.id)}>
-                    <div className="border-2 border-gray-500 rounded-lg aspect-[2/3] border-dashed cursor-pointer transition-all duration-150 ease-in p-2">
-                      <div
-                        className={`w-full h-full  flex flex-col items-center gap-3 ${theme.color}`}
-                      >
-                        <div className="w-12 h-12 mt-3 bg-[#EFF0EA] bg-opacity-70 rounded-full"></div>
-                        <div className="relative w-[calc(100%-20px)] h-6">
-                          <div
-                            className={`w-full h-full ${theme.boxColor} absolute z-20 ${theme.linkStyle}`}
-                          ></div>
-                          {theme.embosedBox && (
-                            <div
-                              className={`w-full h-full ${theme.embosedBoxColor} absolute top-0.5 left-0.5 z-10 ${theme.linkStyle}`}
-                            ></div>
-                          )}
-                        </div>
-                        <div className="relative w-[calc(100%-20px)] h-6">
-                          <div
-                            className={`w-full h-full ${theme.boxColor} absolute z-20 ${theme.linkStyle}`}
-                          ></div>
-                          {theme.embosedBox && (
-                            <div
-                              className={`w-full h-full ${theme.embosedBoxColor} absolute top-0.5 left-0.5 z-10 ${theme.linkStyle}`}
-                            ></div>
-                          )}
-                        </div>
-                        <div className="relative w-[calc(100%-20px)] h-6">
-                          <div
-                            className={`w-full h-full ${theme.boxColor} absolute z-20 ${theme.linkStyle}`}
-                          ></div>
-                          {theme.embosedBox && (
-                            <div
-                              className={`w-full h-full ${theme.embosedBoxColor} absolute top-0.5 left-0.5 z-10 ${theme.linkStyle}`}
-                            ></div>
-                          )}
-                        </div>
-                      </div>
-                      {/* <div className="relative rounded-xl h-full mx-auto">
-                        <div
-                          className={`absolute left-0 top-0 h-full w-full z-0 ${color.color}`}
-                        >
-                          <div className="relative z-10 pt-9">
-                            <div className="rounded-full mx-auto w-12 h-12 bg-[#EFF0EA] bg-opacity-70"></div>
-                          </div>
-                          <div
-                            className={`w-[calc(100%-20px)] bg-[#EFF0EA] h-6 ${color.linkStyle} mx-auto mt-1`}
-                          ></div>
-                          <div
-                            className={`w-[calc(100%-20px)] bg-[#EFF0EA] h-6 ${color.linkStyle} mx-auto mt-1`}
-                          ></div>
-                          <div
-                            className={`w-[calc(100%-20px)] bg-[#EFF0EA] h-6 ${color.linkStyle} mx-auto mt-1`}
-                          ></div>
-                        </div>
-                      </div> */}
-                    </div>
-                    <div className="text-center">{theme.name}</div>
-                  </div>
-                </React.Fragment>
-              ))}
+              <ThemeSection />
             </div>
           </div>
         </div>
@@ -289,6 +156,8 @@ const Page = (props: Props) => {
         croppedImageUrl={croppedImageUrl}
         setCroppedImageUrl={setCroppedImageUrl}
         uploadProfileImage={uploadProfileImage}
+        fileName={fileName}
+        setFileName={setFileName}
       />
     </div>
   );

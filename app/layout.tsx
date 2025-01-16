@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Poppins, Special_Elite } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
@@ -16,6 +16,13 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
+const specialElite = Special_Elite({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-specialelite",
+  weight: ["400"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${poppins.variable}`}>
+      <body
+        className={`${inter.className} ${poppins.variable} ${specialElite.variable}`}
+      >
         <Toaster />
         {children}
       </body>

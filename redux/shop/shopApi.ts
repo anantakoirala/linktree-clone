@@ -13,7 +13,6 @@ export const shopApi = api.injectEndpoints({
     }),
     saveProduct: builder.mutation({
       query: ({ data }) => {
-        console.log("data", data);
         return {
           url: `/api/v1/shop/save-product`,
           method: "POST",
@@ -24,6 +23,7 @@ export const shopApi = api.injectEndpoints({
           },
         };
       },
+      invalidatesTags: ["shop"],
     }),
     getAllProducts: builder.query({
       query: () => {
@@ -42,6 +42,46 @@ export const shopApi = api.injectEndpoints({
           console.log(error);
         }
       },
+      providesTags: ["shop"],
+    }),
+    createCustomProduct: builder.mutation({
+      query: (data) => {
+        console.log("data", data);
+        return {
+          url: `/api/v1/shop/save-custom-product`,
+          method: "POST",
+          body: data, // Send the data object directly
+        };
+      },
+      invalidatesTags: ["shop"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error) {
+          console.log("updated errir");
+          console.log(error);
+        }
+      },
+    }),
+    updateProduct: builder.mutation({
+      query: (data) => {
+        console.log("data", data);
+        return {
+          url: `/api/v1/shop/save-custom-product`,
+          method: "POST",
+          body: data, // Send the data object directly
+        };
+      },
+    }),
+    changeProductStatus: builder.mutation({
+      query: ({ id, status }) => {
+        console.log("state id", status);
+        return {
+          url: `/api/v1/shop/change-product-status/${id}`,
+          method: "PATCH",
+          body: { status }, // Send the data object directly
+        };
+      },
     }),
   }),
 });
@@ -52,4 +92,7 @@ export const {
   useSaveProductMutation,
   useGetAllProductsQuery,
   useLazyGetAllProductsQuery,
+  useCreateCustomProductMutation,
+  useUpdateProductMutation,
+  useChangeProductStatusMutation,
 } = shopApi;

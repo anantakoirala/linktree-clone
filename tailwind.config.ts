@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     fontFamily: {
       poppins: ["var(--font-poppins)"],
+      specialelite: ["var(--font-specialelite)"],
     },
     extend: {
       backgroundImage: {

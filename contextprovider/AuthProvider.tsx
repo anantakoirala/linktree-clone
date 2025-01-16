@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(true);
       try {
         const response = await restApi.get("/api/v1/auth/me");
-        console.log("response context", response);
+
         const userData: AuthContextValue = {
           email: response.data.user.email,
           username: response.data.user.username,

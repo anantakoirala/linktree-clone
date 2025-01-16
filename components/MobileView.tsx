@@ -68,14 +68,10 @@ const dummyLink = [
 
 const MobileView = (props: Props) => {
   const { links } = useSelector((state: RootState) => state.link);
-  const { image, username, theme } = useSelector(
+  const { image, username, theme, profile_title, bio } = useSelector(
     (state: RootState) => state.profile
   );
-  const [parsedTheme, setParsedTheme] = useState<Theme>();
 
-  useEffect(() => {
-    setParsedTheme(JSON.parse(theme));
-  }, [theme]);
   return (
     <>
       {/* flowbite mockup */}
@@ -105,7 +101,7 @@ const MobileView = (props: Props) => {
         <div className="h-[46px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -start-[17px] top-[178px] rounded-s-lg"></div>
         <div className="h-[64px] w-[3px] bg-gray-800 dark:bg-gray-800 absolute -end-[17px] top-[142px] rounded-e-lg"></div>
         <div
-          className={`rounded-[2rem] overflow-hidden w-[272px] h-[572px] ${parsedTheme?.color} dark:bg-gray-800 relative`}
+          className={`rounded-[2rem] overflow-hidden w-[272px] h-[572px] ${theme?.color} dark:bg-gray-800 relative`}
         >
           {/* Background Image */}
           {/* <img
@@ -128,15 +124,15 @@ const MobileView = (props: Props) => {
             </div>
             {/* Username */}
             <div
-              className={`text-center text-sm font-semibold mt-2 break-words ${parsedTheme?.text}`}
+              className={`text-center text-sm font-semibold mt-2 break-words ${theme?.text}`}
             >
-              @{username}
+              @{profile_title}
             </div>
             {/* Bio */}
             <div
-              className={`text-center text-[8px] font-semibold mt-1 ${parsedTheme?.text}`}
+              className={`text-center text-[8px] font-semibold mt-1 ${theme?.text}`}
             >
-              <div className="px-8 break-words">this is bio</div>
+              <div className="px-8 break-words">{bio}</div>
             </div>
 
             {/* Tabs */}
@@ -167,36 +163,18 @@ const MobileView = (props: Props) => {
                 <TabsContent value="account" className="">
                   {/* Links */}
                   <div className="w-full">
-                    {/* {links.map((link: LinkType) => (
-                      <a
-                        key={link._id}
-                        href={link.url}
-                        target="_blank"
-                        className={`flex items-center relative w-[calc(100%-15px)] mx-auto ${parsedTheme?.text} ${parsedTheme?.linkStyle} ${parsedTheme?.boxColor} mt-2 p-1  z-20 h-[35px]`}
-                      >
-                        <img
-                          src={"https://picsum.photos/id/8/300/200"}
-                          alt=""
-                          className="rounded-lg h-[30px] aspect-square"
-                        />
-
-                        <div className="absolute w-full">
-                          <div className="max-w-[70%] w-full mx-auto text-[10px] text-center">
-                            {link.name}
-                          </div>
-                        </div>
-                      </a>
-                    ))} */}
-
                     {links.map((link: LinkType, index) => (
-                      <div className="relative w-[calc(100%-15px)] h-[42px] mx-auto ">
+                      <div
+                        className="relative w-[calc(100%-15px)] h-[42px] mx-auto "
+                        key={index}
+                      >
                         <div className="w-full h-full absoulte z-20">
                           <div
-                            className={`flex flex-row items-center justify-around relative ${parsedTheme?.linkStyle} mx-auto z-20 ${parsedTheme?.boxColor} mt-2 px-1 h-full`}
+                            className={`flex flex-row items-center justify-around relative ${theme?.linkStyle} mx-auto z-20 ${theme?.boxColor} mt-2 px-1 h-full`}
                           >
                             <div className="left-1.5 absolute ">
                               <span
-                                className={`relative flex shrink-0 overflow-hidden ${parsedTheme?.linkStyle} size-8 cursor-pointer `}
+                                className={`relative flex shrink-0 overflow-hidden ${theme?.linkStyle} size-8 cursor-pointer `}
                               >
                                 <img
                                   src={image}
@@ -208,7 +186,7 @@ const MobileView = (props: Props) => {
 
                             <div className="">
                               <div
-                                className={`max-w-[70%] w-full mx-auto text-[10px] ${parsedTheme?.text} text-center  `}
+                                className={`max-w-[70%] w-full mx-auto text-[10px] ${theme?.text} text-center  `}
                               >
                                 youtube
                               </div>
@@ -216,13 +194,13 @@ const MobileView = (props: Props) => {
                           </div>
                         </div>
                         {/* Embosed shadow */}
-                        {parsedTheme?.embosedBox && (
+                        {theme?.embosedBox && (
                           <div
                             className={`absolute ${
                               index === 0 ? "top-[1.5px]" : "top-[2px]"
-                            } left-0.5 z-10 w-full h-full ${
-                              parsedTheme?.linkStyle
-                            } ${parsedTheme?.embosedBoxColor}`}
+                            } left-0.5 z-10 w-full h-full ${theme?.linkStyle} ${
+                              theme?.embosedBoxColor
+                            }`}
                           ></div>
                         )}
                       </div>

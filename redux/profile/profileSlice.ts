@@ -1,4 +1,5 @@
 import { Link } from "@/types/Link";
+import { Theme } from "@/types/Theme";
 import { createSlice } from "@reduxjs/toolkit";
 
 type initialState = {
@@ -7,7 +8,9 @@ type initialState = {
   username: string;
   email: string;
   image: string;
-  theme: string;
+  theme: Theme;
+  profile_title: string;
+  bio: string;
 };
 
 const initialState: initialState = {
@@ -16,16 +19,20 @@ const initialState: initialState = {
   username: "",
   image: "",
   email: "",
-  theme: JSON.stringify({
+  profile_title: "",
+  bio: "",
+  theme: {
     id: 2,
     color: "bg-[#000957]", // Deep Blue
     text: "text-white", // White text for contrast
+    shopBox: "rounded-md",
     name: "Blue Horizon",
     linkStyle: "rounded-md", // Rounded link style
     boxColor: "bg-[#344CB7]", // Lighter Blue
+    hover: "",
     embosedBox: true,
     embosedBoxColor: "bg-[#FFEB00]", // Yellow for embossed effect
-  }),
+  },
 };
 
 export const profileSlice = createSlice({
@@ -38,6 +45,8 @@ export const profileSlice = createSlice({
       state.username = action.payload.username;
       state.email = action.payload.email;
       state.image = action.payload.image;
+      state.profile_title = action.payload.profile_title;
+      state.bio = action.payload.bio;
       state.theme = action.payload.theme;
     },
   },

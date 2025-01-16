@@ -3,6 +3,8 @@ export type Theme = {
   color: string;
   text: string;
   name: string;
+  shopBox: string;
+  hover: string;
   linkStyle: string;
   embosedBox: boolean;
   embosedBoxColor: string;

@@ -12,7 +12,13 @@ import { z } from "zod";
 type Props = {};
 const formSchema = z
   .object({
-    username: z.string().min(3),
+    username: z
+      .string()
+      .min(3)
+      .regex(
+        /^[a-zA-Z0-9._]+$/,
+        "Username can only include letters, numbers, underscores (_) and periods (.)"
+      ),
     email: z.string().email(),
     password: z.string().min(5).nonempty("Password is required"), // Ensures password is not empty,
     confirmPassword: z.string().nonempty("Confirm Password is required"),
@@ -42,6 +48,7 @@ const Page = (props: Props) => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const response = await restApi.post("/api/v1/auth/register", data);
+
       toast.success(response?.data?.message);
       route.push("/login");
 

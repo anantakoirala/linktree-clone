@@ -14,7 +14,7 @@ export const profileApi = api.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("profile data", result.data.user);
+
           dispatch(setProfile(result.data.user));
         } catch (error: any) {
           console.log("updated errir");
@@ -41,9 +41,8 @@ export const profileApi = api.injectEndpoints({
         }
       },
     }),
-    updateTheme: builder.mutation({
+    updateUserProfile: builder.mutation({
       query: (data) => {
-        console.log("data", data);
         return {
           url: `/api/v1/profile/updateTheme`,
           method: "POST",
@@ -53,7 +52,7 @@ export const profileApi = api.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("result", result);
+
           dispatch(setProfile(result.data.user));
         } catch (error) {
           console.log("updated errir");
@@ -67,5 +66,5 @@ export const profileApi = api.injectEndpoints({
 export const {
   useLazyGetProfileQuery,
   useUploadProfileImageMutation,
-  useUpdateThemeMutation,
+  useUpdateUserProfileMutation,
 } = profileApi;

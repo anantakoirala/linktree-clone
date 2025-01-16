@@ -25,7 +25,7 @@ export const linkApi = api.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("result", result.data.links);
+
           dispatch(setLinks(result.data.links));
         } catch (error: any) {
           console.log("updated errir");

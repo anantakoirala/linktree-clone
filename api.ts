@@ -23,7 +23,6 @@ restApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     // Check if the error is due to an expired token (401)
-    console.log("message", error.response.data.message);
     if (error.response && error.response?.status === 401) {
       const message = error.response?.data?.message;
 
