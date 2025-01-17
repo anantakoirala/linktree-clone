@@ -1,6 +1,7 @@
 "use client";
 import { useLazyGetAllLinksQuery } from "@/redux/link/linkApi";
 import { useLazyGetProfileQuery } from "@/redux/profile/profileApi";
+import { useLazyGetAllProductsQuery } from "@/redux/shop/shopApi";
 import React, { useEffect } from "react";
 
 type Props = {
@@ -11,15 +12,21 @@ const Layout = ({ children }: Props) => {
   const [getAllLinks, { data: allLinks, isSuccess: getAllLinkSuccess }] =
     useLazyGetAllLinksQuery();
 
-  const [getProfile] = useLazyGetProfileQuery(); // Renaming to avoid naming conflict
+  const [getProfile] = useLazyGetProfileQuery();
+
+  const [getAllProducts] = useLazyGetAllProductsQuery();
 
   useEffect(() => {
-    getProfile({}); // Call the appropriate trigger here (you can pass the necessary params)
-  }, [getProfile]); // Add getProfile to the dependency array
+    getProfile({});
+  }, [getProfile]);
 
   useEffect(() => {
-    getAllLinks({}); // Trigger all links on mount or as needed
-  }, [getAllLinks]); // Add getAllLinks to the dependency array
+    getAllLinks({});
+  }, [getAllLinks]);
+
+  useEffect(() => {
+    getAllProducts({});
+  }, [getAllProducts]);
 
   return <div>{children}</div>;
 };

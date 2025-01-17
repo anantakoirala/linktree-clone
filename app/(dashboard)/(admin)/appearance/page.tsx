@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import ThemeSection from "@/components/ThemeSection";
-import { setProfile } from "@/redux/profile/profileSlice";
+
 import debounce from "lodash.debounce";
 
 type Props = {};
@@ -97,7 +97,7 @@ const Page = (props: Props) => {
             <div className="flex items-center justify-between gap-4">
               <span className="relative flex shrink-0 overflow-hidden rounded-full size-32 cursor-pointer ring-offset-2 ring-2 ring-slate-200">
                 <img
-                  src={image}
+                  src={image ? image : "/unnamed.png"}
                   className="h-full w-full object-cover"
                   alt=""
                 />

@@ -149,9 +149,15 @@ const AddProductModal = ({ open, setOpen }: Props) => {
   // Saving pasted link product
   const saveProduct = async () => {
     try {
-      const response = await saveProductData({ data: ogdata }).unwrap();
-      console.log("response", response.data);
-      console.log("success", successProductSaving);
+      const dataToBeSubmitted = {
+        ogTitle: ogdata?.ogTitle,
+        ogImage: ogdata?.ogImage,
+        url: getValues("linkValue"),
+      };
+      const response = await saveProductData({
+        data: dataToBeSubmitted,
+      }).unwrap();
+
       if (response.success) {
         // Check `success` from the response object
         setOpen(false);

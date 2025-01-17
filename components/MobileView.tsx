@@ -7,70 +7,17 @@ import { useSelector } from "react-redux";
 import { cn } from "@/lib/utils";
 import { AuthContext } from "@/contextprovider/AuthProvider";
 import { Theme } from "@/types/Theme";
+import LinkCard from "./LinkCard";
+import ProductCard from "./ProductCard";
 
 type Props = {};
-const dummyLink = [
-  {
-    id: 1,
-    name: "youtube channel",
-    url: "https://www.youtube.com/watch?v=NtsbjB8QD3Y&t=3981s&ab_channel=JohnWeeksDev",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 2,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 3,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 4,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 5,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 6,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 7,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 8,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 9,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-];
 
 const MobileView = (props: Props) => {
   const { links } = useSelector((state: RootState) => state.link);
   const { image, username, theme, profile_title, bio } = useSelector(
     (state: RootState) => state.profile
   );
+  const { products } = useSelector((state: RootState) => state.shop);
 
   return (
     <>
@@ -116,7 +63,7 @@ const MobileView = (props: Props) => {
             <div className="flex items-center justify-center mt-10">
               <span className="relative flex shrink-0 overflow-hidden rounded-full size-20 cursor-pointer ">
                 <img
-                  src={image}
+                  src={image ? image : "/unnamed.png"}
                   className="h-full w-full object-cover"
                   alt=""
                 />
@@ -138,24 +85,19 @@ const MobileView = (props: Props) => {
             {/* Tabs */}
             <div className="w-full flex items-center justify-center mt-2">
               <Tabs defaultValue="account" className="w-full">
-                <TabsList className="flex justify-center w-fit mx-auto  rounded-full mb-4">
+                <TabsList className="flex justify-center w-fit mx-auto rounded-full mb-4">
                   <TabsTrigger
                     value="account"
-                    className={cn(
-                      "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200",
-                      "data-[state=active]:bg-[#8228D9] data-[state=active]:text-white",
-                      "data-[state=inactive]:text-gray-700"
-                    )}
+                    className={`
+                      flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200 data-[state=active]:bg-[#8228D9] data-[state=active]:text-white data-[state=inactive]:text-gray-700`}
                   >
                     Links
                   </TabsTrigger>
                   <TabsTrigger
                     value="password"
-                    className={cn(
-                      "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200",
-                      "data-[state=active]:bg-[#8228D9] data-[state=active]:text-white",
-                      "data-[state=inactive]:text-gray-700"
-                    )}
+                    className={
+                      "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200 data-[state=active]:bg-[#8228D9] data-[state=active]:text-white data-[state=inactive]:text-gray-700"
+                    }
                   >
                     Shop
                   </TabsTrigger>
@@ -164,51 +106,70 @@ const MobileView = (props: Props) => {
                   {/* Links */}
                   <div className="w-full">
                     {links.map((link: LinkType, index) => (
-                      <div
-                        className="relative w-[calc(100%-15px)] h-[42px] mx-auto "
-                        key={index}
-                      >
-                        <div className="w-full h-full absoulte z-20">
-                          <div
-                            className={`flex flex-row items-center justify-around relative ${theme?.linkStyle} mx-auto z-20 ${theme?.boxColor} mt-2 px-1 h-full`}
-                          >
-                            <div className="left-1.5 absolute ">
-                              <span
-                                className={`relative flex shrink-0 overflow-hidden ${theme?.linkStyle} size-8 cursor-pointer `}
-                              >
-                                <img
-                                  src={image}
-                                  className="h-full w-full object-cover"
-                                  alt=""
-                                />
-                              </span>
-                            </div>
+                      // <div
+                      //   className="relative w-[calc(100%-15px)] h-[42px] mx-auto "
+                      //   key={index}
+                      // >
+                      //   <div className="w-full h-full absoulte z-20">
+                      //     <div
+                      //       className={`flex flex-row items-center justify-around relative ${theme?.linkStyle} mx-auto z-20 ${theme?.boxColor} mt-2 px-1 h-full`}
+                      //     >
+                      //       <div className="left-1.5 absolute ">
+                      //         <span
+                      //           className={`relative flex shrink-0 overflow-hidden ${theme?.linkStyle} size-8 cursor-pointer `}
+                      //         >
+                      //           <img
+                      //             src={"/placeholder.jpg"}
+                      //             className={`h-full w-full object-cover ${theme?.linkStyle}`}
+                      //             alt=""
+                      //           />
+                      //         </span>
+                      //       </div>
 
-                            <div className="">
-                              <div
-                                className={`max-w-[70%] w-full mx-auto text-[10px] ${theme?.text} text-center  `}
-                              >
-                                youtube
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Embosed shadow */}
-                        {theme?.embosedBox && (
-                          <div
-                            className={`absolute ${
-                              index === 0 ? "top-[1.5px]" : "top-[2px]"
-                            } left-0.5 z-10 w-full h-full ${theme?.linkStyle} ${
-                              theme?.embosedBoxColor
-                            }`}
-                          ></div>
-                        )}
-                      </div>
+                      //       <div className="">
+                      //         <div
+                      //           className={`max-w-[70%] w-full mx-auto text-[10px] ${theme?.text} text-center  `}
+                      //         >
+                      //           youtube
+                      //         </div>
+                      //       </div>
+                      //     </div>
+                      //   </div>
+                      //   {/* Embosed shadow */}
+                      //   {theme?.embosedBox && (
+                      //     <div
+                      //       className={`absolute ${
+                      //         index === 0 ? "top-[1.5px]" : "top-[2px]"
+                      //       } left-0.5 z-10 w-full h-full ${theme?.linkStyle} ${
+                      //         theme?.embosedBoxColor
+                      //       }`}
+                      //     ></div>
+                      //   )}
+                      // </div>
+                      <LinkCard
+                        theme={theme}
+                        index={index}
+                        mobileView={true}
+                        link={link}
+                      />
                     ))}
                   </div>
                 </TabsContent>
                 <TabsContent value="password">
-                  <div className="w-full p-2">ananta</div>
+                  <div className="w-full p-2">
+                    <div className="w-full">
+                      <div className="grid grid-cols-2 gap-x-0.5">
+                        {products.map((product: any, index: number) => (
+                          <ProductCard
+                            key={index}
+                            theme={theme}
+                            product={product}
+                            mobileView={true}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>

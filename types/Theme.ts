@@ -9,4 +9,5 @@ export type Theme = {
   embosedBox: boolean;
   embosedBoxColor: string;
   boxColor: string;
+  tabColor: string;
 };

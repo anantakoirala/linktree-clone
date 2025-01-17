@@ -60,7 +60,7 @@ const Page = (props: Props) => {
               {/* Profile image */}
               <span className="relative flex shrink-0 overflow-hidden rounded-full size-24 lg:size-28 hover:size-32 transitionall duration-300 cursor-pointer mt-2  ">
                 <img
-                  src={user?.image}
+                  src={user?.image ? user?.image : "/unnamed.png"}
                   className="h-full w-full object-cover"
                   alt=""
                 />
@@ -116,7 +116,12 @@ const Page = (props: Props) => {
                     {/* Links */}
                     <div className="w-full">
                       {links.map((link: LinkType, index) => (
-                        <LinkCard key={index} theme={theme} index={index} />
+                        <LinkCard
+                          key={index}
+                          theme={theme}
+                          index={index}
+                          link={link}
+                        />
                       ))}
                     </div>
                   </TabsContent>

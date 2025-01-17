@@ -1,5 +1,14 @@
 import { Theme } from "@/types/Theme";
 
+// Add path of themes file to tailwind.config.ts like as below
+
+// content: [
+//   "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+//   "./components/**/*.{js,ts,jsx,tsx,mdx}",
+//   "./app/**/*.{js,ts,jsx,tsx,mdx}",
+//   "./lib/**/*.{js,ts,jsx,tsx,mdx}",
+// ],
+
 export const themes: Theme[] = [
   {
     id: 1,
@@ -12,6 +21,7 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: false,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-gray-200",
   },
   {
     id: 2,
@@ -24,6 +34,7 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: true,
     embosedBoxColor: "bg-[#FFEB00]", // Yellow for embossed effect
+    tabColor: "bg-blue-600",
   },
   {
     id: 3,
@@ -36,18 +47,20 @@ export const themes: Theme[] = [
     hover: "hover:scale-105 ease-in-out",
     embosedBox: false,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-purple-400",
   },
   {
     id: 4,
     color: "bg-gradient-to-t from-[#16C47F] via-[#FFD65A] to-[#FF9D23]",
-    text: "text-black", // White text for contrast
+    text: "text-black",
     name: "Tropical Vibes",
     shopBox: "rounded-xl",
-    linkStyle: "rounded-md", // Rounded link style
-    boxColor: "bg-[#FFD65A]", // Soft Yellow
+    linkStyle: "rounded-md",
+    boxColor: "bg-[#FFD65A]",
     hover: "",
     embosedBox: true,
-    embosedBoxColor: "bg-[#FF9D23]", // Orange for embossed effect
+    embosedBoxColor: "bg-[#FF9D23]",
+    tabColor: "bg-[#FFD65A]",
   },
   {
     id: 5,
@@ -60,6 +73,7 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: true,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-red-500",
   },
   {
     id: 6,
@@ -72,6 +86,7 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: false,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-blue-600",
   },
   {
     id: 7,
@@ -84,18 +99,20 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: true,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-lime-400",
   },
   {
     id: 8,
     color: "bg-gradient-to-t from-gray-800 to-emerald-500",
     text: "text-white",
     name: "Tinted Lake",
-    linkStyle: "rounded-full bg-transparent border ",
+    linkStyle: "rounded-full bg-transparent border",
     shopBox: "rounded-3xl border",
     boxColor: "",
     hover: "hover:bg-white hover:text-emerald-800",
     embosedBox: false,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-emerald-400",
   },
   {
     id: 9,
@@ -108,42 +125,45 @@ export const themes: Theme[] = [
     hover: "",
     embosedBox: false,
     embosedBoxColor: "bg-yellow-800",
+    tabColor: "bg-pink-400",
   },
   {
     id: 10,
     color: "bg-[#f8d210]",
-    text: "text-black", // White text for contrast
+    text: "text-black",
     name: "Tropical Burst",
-    linkStyle: "rounded-md", // Rounded link style
+    linkStyle: "rounded-md",
     shopBox: "rounded-md",
-    boxColor: "bg-[#f51720]", // Red for the box
+    boxColor: "bg-[#f51720]",
     hover: "",
     embosedBox: true,
-    embosedBoxColor: "bg-[#fa26a0]", // Pink for embossed effect
+    embosedBoxColor: "bg-[#fa26a0]",
+    tabColor: "bg-yellow-400",
   },
   {
     id: 11,
-    color: "bg-gradient-radial from-[#3d550c] via-[#81b622] to-[#ecf87f]", // Circular gradient from deep green to lime yellow
-    text: "text-black", // Black text for contrast
+    color: "bg-gradient-radial from-[#3d550c] via-[#81b622] to-[#ecf87f]",
+    text: "text-black",
     name: "Lush Green",
-    linkStyle: "rounded-lg", // Rounded link style
+    linkStyle: "rounded-lg",
     shopBox: "rounded-md",
-    boxColor: "bg-[#59981a]", // Dark green for the box
+    boxColor: "bg-[#59981a]",
     hover: "hover:top-1 hover:left-1",
     embosedBox: true,
-    embosedBoxColor: "bg-[#81b622]", // Lime green for embossed effect
+    embosedBoxColor: "bg-[#81b622]",
+    tabColor: "bg-lime-500",
   },
   {
     id: 12,
-    color: "bg-gradient-to-t from-[#fd7f20] via-[#fc2e20] to-[#fdb750]", // Linear gradient from orange to red, to yellow
-    text: "text-white", // White text for contrast
+    color: "bg-gradient-to-t from-[#fd7f20] via-[#fc2e20] to-[#fdb750]",
+    text: "text-white",
     name: "Fiery Blaze",
-    linkStyle: "rounded-full", // Rounded link style
+    linkStyle: "rounded-full",
     shopBox: "rounded-md",
-    boxColor: "bg-[#010100]", // Dark background for the box
+    boxColor: "bg-[#010100]",
     hover: "",
     embosedBox: true,
-
-    embosedBoxColor: "bg-[#fdb750]", // Red for the embossed effect
+    embosedBoxColor: "bg-[#fdb750]",
+    tabColor: "bg-orange-500",
   },
 ];

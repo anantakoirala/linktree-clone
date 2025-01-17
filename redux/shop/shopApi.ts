@@ -64,14 +64,15 @@ export const shopApi = api.injectEndpoints({
       },
     }),
     updateProduct: builder.mutation({
-      query: (data) => {
+      query: ({ id, data }) => {
         console.log("data", data);
         return {
-          url: `/api/v1/shop/save-custom-product`,
-          method: "POST",
+          url: `/api/v1/shop/update-product/${id}`,
+          method: "PATCH",
           body: data, // Send the data object directly
         };
       },
+      invalidatesTags: ["shop"],
     }),
     changeProductStatus: builder.mutation({
       query: ({ id, status }) => {
