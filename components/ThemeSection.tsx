@@ -29,7 +29,6 @@ const ThemeSection = (props: Props) => {
 
   useEffect(() => {
     if (stateTheme) {
-      console.log("stateTheme", stateTheme);
       setSelectedThemeId(stateTheme.id);
     }
   }, [stateTheme]);

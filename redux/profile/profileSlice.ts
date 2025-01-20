@@ -23,15 +23,24 @@ const initialState: initialState = {
   bio: "",
   theme: {
     id: 2,
-    color: "bg-[#000957]", // Deep Blue
-    text: "text-white", // White text for contrast
-    shopBox: "rounded-md",
+    color: "bg-[#000957]",
+    text: "text-white",
     name: "Blue Horizon",
-    linkStyle: "rounded-md", // Rounded link style
-    boxColor: "bg-[#344CB7]", // Lighter Blue
+    linkStyle: "rounded-md",
+    shopBox: "rounded-md",
+    boxColor: "bg-[#344CB7]",
     hover: "",
     embosedBox: true,
-    embosedBoxColor: "bg-[#FFEB00]", // Yellow for embossed effect
+    embosedBoxColor: "bg-[#FFEB00]",
+    tabColor: "bg-blue-600",
+    selectedShareLinkBackgroundIndex: 0,
+    shareLink_background: [
+      { background: "bg-[#000957]", textColor: "text-white" }, // Deep blue - white text for contrast
+      { background: "bg-[#344CB7]", textColor: "text-white" }, // Light blue - white text for readability
+      { background: "bg-[#FFEB00]", textColor: "text-black" }, // Yellow - black text for readability
+      { background: "bg-blue-500", textColor: "text-white" }, // Medium blue - white text for contrast
+      { background: "bg-[#87CEEB]", textColor: "text-black" }, // Sky blue - black text for better readability
+    ],
   },
 };
 
@@ -49,8 +58,12 @@ export const profileSlice = createSlice({
       state.bio = action.payload.bio;
       state.theme = action.payload.theme;
     },
+    setSelectedShareLinkBackgroundIndex: (state, action) => {
+      state.theme.selectedShareLinkBackgroundIndex = action.payload;
+    },
   },
 });
 
-export const { setProfile } = profileSlice.actions;
+export const { setProfile, setSelectedShareLinkBackgroundIndex } =
+  profileSlice.actions;
 export default profileSlice.reducer;

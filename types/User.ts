@@ -5,4 +5,5 @@ export type User = {
   email: string;
   image: string;
   theme: string;
+  profile_title: string;
 };

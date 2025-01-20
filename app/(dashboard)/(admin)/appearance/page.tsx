@@ -6,17 +6,22 @@ import {
   useUpdateUserProfileMutation,
   useUploadProfileImageMutation,
 } from "@/redux/profile/profileApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import ThemeSection from "@/components/ThemeSection";
 
 import debounce from "lodash.debounce";
+import { useRouter } from "next/navigation";
+import { setSelectedShareLinkBackgroundIndex } from "@/redux/profile/profileSlice";
 
 type Props = {};
 
 const Page = (props: Props) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [fileName, setFileName] = useState<string>("");
+  const [textColor, setTextColor] = useState<string>("");
   const [imgSrc, setImgSrc] = useState("");
   const [profileTitle, setProfileTitle] = useState<string>("");
   const [bio, setBio] = useState<string>("");
@@ -34,6 +39,7 @@ const Page = (props: Props) => {
     username,
     profile_title,
     bio: stateBio,
+    theme,
   } = useSelector((state: RootState) => state.profile);
 
   const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,13 +89,23 @@ const Page = (props: Props) => {
     }
   };
 
+  const changeBackground = (bg_color: string, index: number) => {
+    dispatch(setSelectedShareLinkBackgroundIndex(index));
+    const newTheme = { ...theme, selectedShareLinkBackgroundIndex: index };
+
+    updateProfile({
+      field: "theme",
+      value: newTheme,
+    });
+  };
+
   useEffect(() => {
     setProfileTitle(profile_title);
     setBio(stateBio);
   }, [username, stateBio]);
 
   return (
-    <div className="flex ">
+    <div className="flex flex-col gap-4 mb-16">
       <div className="flex flex-col w-full">
         <div className="">
           <div className="font-semibold pb-4  text-xl ">Profile</div>
@@ -145,6 +161,72 @@ const Page = (props: Props) => {
           <div className="w-full bg-white rounded-3xl p-6">
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
               <ThemeSection />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="">
+          <div className="font-semibold pb-1  text-xl ">Sharing Preview</div>
+          <div className="font-normal pb-4 text-md ">
+            Your sharing preview is the image that's displayed when you share
+            your Linktree with others.
+          </div>
+          <div className="w-full bg-white rounded-3xl p-6">
+            <div
+              className={`w-full h-96 ${
+                theme.shareLink_background[
+                  theme.selectedShareLinkBackgroundIndex
+                ].background
+              } rounded-3xl flex flex-col transition-colors duration-300 ease-linear`}
+            >
+              <div className="w-full h-[55%] flex items-center justify-center mt-5">
+                <span className="flex shrink-0 overflow-hidden rounded-full size-40 cursor-pointer ">
+                  <img
+                    src={image ? image : "/unnamed.png"}
+                    className="h-full w-full object-cover"
+                    alt=""
+                  />
+                </span>
+              </div>
+              <div
+                className={`w-full h-auto flex justify-center  ${
+                  theme.shareLink_background[
+                    theme.selectedShareLinkBackgroundIndex
+                  ]?.textColor
+                }  font-[900] text-[34px] `}
+              >
+                {profile_title ? profile_title : username}
+              </div>
+              <div
+                className={`w-full h-auto flex items-center  ${
+                  theme.shareLink_background[
+                    theme.selectedShareLinkBackgroundIndex
+                  ]?.textColor
+                } justify-center tracking-tighter text-center  font-[700] text-[20px]`}
+              >
+                /{username}
+              </div>
+            </div>
+            <div className="w-full mt-4 font-bold">Custom background</div>
+            <div className="w-full h-20 flex flex-row items-center gap-3">
+              {theme.shareLink_background?.map((background_color, index) => (
+                <div
+                  className="w-14 h-14 border flex items-center justify-center border-black rounded-full"
+                  key={index}
+                >
+                  <div
+                    className={`${background_color.background} rounded-full ${
+                      theme.selectedShareLinkBackgroundIndex === index
+                        ? "w-10 h-10 transition-all duration-300"
+                        : "w-12 h-12"
+                    }`}
+                    onClick={() =>
+                      changeBackground(background_color.background, index)
+                    }
+                  ></div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
