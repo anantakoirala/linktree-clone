@@ -58,8 +58,7 @@ const Page = (props: Props) => {
   const saveProfileTitle = useCallback(
     debounce((title: string) => {
       updateProfile({
-        field: "profile_title",
-        value: title,
+        profile_title: title,
       });
     }, 1000),
     []
@@ -68,8 +67,7 @@ const Page = (props: Props) => {
   const saveBio = useCallback(
     debounce((bio: string) => {
       updateProfile({
-        field: "bio",
-        value: bio,
+        bio: bio,
       });
     }, 1000), // Debounce time is 1000ms (1 second)
     []
@@ -92,10 +90,9 @@ const Page = (props: Props) => {
   const changeBackground = (bg_color: string, index: number) => {
     dispatch(setSelectedShareLinkBackgroundIndex(index));
     const newTheme = { ...theme, selectedShareLinkBackgroundIndex: index };
-
+    console.log("newTheme", newTheme);
     updateProfile({
-      field: "theme",
-      value: newTheme,
+      theme: newTheme,
     });
   };
 
@@ -103,6 +100,8 @@ const Page = (props: Props) => {
     setProfileTitle(profile_title);
     setBio(stateBio);
   }, [username, stateBio]);
+
+  useEffect(() => {}, [theme]);
 
   return (
     <div className="flex flex-col gap-4 mb-16">

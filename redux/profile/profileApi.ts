@@ -46,7 +46,7 @@ export const profileApi = api.injectEndpoints({
         return {
           url: `/api/v1/profile/updateTheme`,
           method: "POST",
-          body: data, // Send the data object directly
+          body: { updateData: data }, // Send the data object directly
         };
       },
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -55,7 +55,7 @@ export const profileApi = api.injectEndpoints({
 
           dispatch(setProfile(result.data.user));
         } catch (error) {
-          console.log("updated errir");
+          console.log("error in update profile");
           console.log(error);
         }
       },

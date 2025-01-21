@@ -20,7 +20,30 @@ const LinkCard = ({ theme, index, mobileView, link }: Props) => {
         <div
           className={`flex flex-row items-center justify-around relative ${theme?.linkStyle} ${theme?.hover}  transition-all duration-150 mx-auto z-20 ${theme?.boxColor} mt-2 px-1 h-full`}
         >
-          <div className="left-2 bottom-[5px] absolute ">
+          <div className="w-[20%] h-full  flex items-center justify-start">
+            <span
+              className={`relative flex shrink-0 overflow-hidden ${
+                theme?.linkStyle
+              } ${mobileView ? "size-8" : "size-12"} cursor-pointer `}
+            >
+              <img
+                src={"/placeholder.jpg"}
+                className="h-full w-full object-cover"
+                alt=""
+              />
+            </span>
+          </div>
+          <div className="w-[60%] h-full flex items-center ">
+            <div
+              className={`max-w-[70%] w-full mx-auto ${
+                mobileView ? "text-[10px]" : "text-[15px]"
+              }  text-center whitespace-nowrap `}
+            >
+              {link.name}
+            </div>
+          </div>
+          <div className="w-[20%] h-full "></div>
+          {/* <div className="left-2 bottom-[5px] absolute ">
             <span
               className={`relative flex shrink-0 overflow-hidden ${
                 theme?.linkStyle
@@ -42,7 +65,7 @@ const LinkCard = ({ theme, index, mobileView, link }: Props) => {
             >
               {link.name}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Embosed shadow */}

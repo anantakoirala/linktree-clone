@@ -33,17 +33,17 @@ const baseQueryWithReauth: typeof baseQuery = async (
         } else {
           // Redirect to login if refresh fails
           console.log("redirect if refresh fails");
-          //window.location.href = "/sign-in";
+          window.location.href = "/login";
         }
       } catch {
         // Refresh failed, redirect to login
         console.log("redirect tologin");
-        //window.location.href = "/sign-in";
+        window.location.href = "/login";
       }
     } else if (message === "Token not provided") {
       // Redirect to login if token is missing
       console.log("login if token missing");
-      //window.location.href = "/sign-in";
+      window.location.href = "/login";
     }
   }
 

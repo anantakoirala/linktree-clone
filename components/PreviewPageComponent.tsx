@@ -33,9 +33,7 @@ import { Ellipsis } from "lucide-react";
 type Props = {};
 
 const PreviewPageComponent = (props: Props) => {
-  const [fullUrl, setFullUrl] = useState<string>(
-    "http://127.0.0.1:4040/ananta_koirala"
-  );
+  const [fullUrl, setFullUrl] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState(true);
   const [shareImage, setShareImage] = useState<string>("");
@@ -52,7 +50,7 @@ const PreviewPageComponent = (props: Props) => {
       await restApi
         .get(`/api/v1/profile/preview-detail/${username}`)
         .then((res) => {
-          console.log("success", res.data.success);
+          console.log("success", res.data);
           if (!res.data.success) {
             console.log("hello");
           }
@@ -92,6 +90,10 @@ const PreviewPageComponent = (props: Props) => {
 
     // Clean up the event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setFullUrl(window.location.href);
   }, []);
 
   return (

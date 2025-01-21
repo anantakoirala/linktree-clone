@@ -1,37 +1,23 @@
 "use client";
+import AdminDropDownMenu from "@/components/AdminDropDownMenu";
 import HookFormError from "@/components/HookFormError";
 import LinkBox from "@/components/LinkBox";
 import { handleApiError } from "@/lib/handleApiError";
-import {
-  useCreateLinkMutation,
-  useLazyGetAllLinksQuery,
-} from "@/redux/link/linkApi";
+import { useCreateLinkMutation } from "@/redux/link/linkApi";
 import { RootState } from "@/redux/store";
 import { Link } from "@/types/Link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, X } from "lucide-react";
+import { Ellipsis, Plus, PlusCircle, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+
+import { CiCirclePlus } from "react-icons/ci";
+
 import { z } from "zod";
 
 type Props = {};
-
-const dummyLink = [
-  {
-    id: 1,
-    name: "youtube channel",
-    url: "https://www.youtube.com/watch?v=NtsbjB8QD3Y&t=3981s&ab_channel=JohnWeeksDev",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 2,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-];
 
 const formSchema = z.object({
   name: z.string().min(2, "Minimum 2 characters needed"),
@@ -39,14 +25,17 @@ const formSchema = z.object({
 });
 
 const Page = (props: Props) => {
+  const [addClicked, setAddClicked] = useState<boolean>(false);
+  const [openDropdownMenu, setOpenDropdownMenu] = useState(false);
   const { links, idForNameEdit, idForUrlEdit } = useSelector(
     (state: RootState) => state.link
   );
   const { products } = useSelector((state: RootState) => state.shop);
-
+  const { image, profile_title } = useSelector(
+    (state: RootState) => state.profile
+  );
   const [createLink, { isError, isLoading, isSuccess }] =
     useCreateLinkMutation();
-  const [addClicked, setAddClicked] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -76,6 +65,34 @@ const Page = (props: Props) => {
       {/* add link button */}
 
       <div className="flex flex-col w-full">
+        <div className="w-full h-20 lg:h-28 mb-2 flex flex-row">
+          <div className="w-[12%] lg:w-[10%] h-full flex items-center justify-start ">
+            <span className="relative flex shrink-0 overflow-hidden rounded-full  size-12  lg:w-[4.5rem] lg:h-[4.5rem] cursor-pointer ">
+              <img
+                src={image ? image : "/unnamed.png"}
+                className="h-full w-full object-cover"
+                alt=""
+              />
+            </span>
+          </div>
+          <div className="w-[86%] lg:w-[88%] h-full px-2 py-3 mb-4">
+            <div className="w-full font-semibold tracking-tight text-[12px] lg:text-[15px] text-left">
+              {profile_title}
+            </div>
+            <div className="w-full text-gray-500 tracking-tight text-[11px] lg:text-[16px] text-left line-clamp-1 text-ellipsis">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
+              asdfadsf asdfasdf
+            </div>
+            <div className="w-full flex items-center  h-8 ">
+              <div className="w-7 h-7  rounded-full flex items-center justify-center">
+                <CiCirclePlus size={24} className="text-gray-500" />
+              </div>
+            </div>
+          </div>
+          <div className="w-[7%] h-full  flex items-center justify-center">
+            <AdminDropDownMenu />
+          </div>
+        </div>
         <button
           className="w-full rounded-full h-12 bg-[#8228D9] hover:bg-[#6c21b3] text-white flex text-[15px] font-semibold items-center justify-center flex-row"
           onClick={() => setAddClicked((prev) => !prev)}

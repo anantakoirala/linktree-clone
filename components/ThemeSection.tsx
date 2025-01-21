@@ -18,8 +18,7 @@ const ThemeSection = (props: Props) => {
   const updateSelectedTheme = (id: number) => {
     const foundTheme = themes.find((theme) => theme.id === id);
     updateTheme({
-      field: "theme",
-      value: foundTheme,
+      theme: foundTheme,
     });
   };
 
