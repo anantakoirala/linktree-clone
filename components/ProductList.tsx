@@ -15,8 +15,6 @@ import React, { useState } from "react";
 import { useChangeProductStatusMutation } from "@/redux/shop/shopApi";
 import { handleApiError } from "@/lib/handleApiError";
 import toast from "react-hot-toast";
-import { Pen } from "lucide-react";
-import TextTruncate from "react-text-truncate";
 import { useDispatch } from "react-redux";
 import { setShopEditId } from "@/redux/shop/shopSlice";
 import EditProductModal from "./EditProductModal";

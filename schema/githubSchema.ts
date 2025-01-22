@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const githubSchema = z.object({
+  name: z.string().default("Github"),
   value: z
     .string()
     .url()

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const phoneSchema = z.object({
+  name: z.string().default("Phone"),
   value: z
     .string()
     .min(11, { message: "Phone number must be at least 11 characters long" })

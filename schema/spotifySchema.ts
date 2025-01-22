@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const spotifySchema = z.object({
+  name: z.string().default("Spotify"),
   value: z
     .string()
     .url()

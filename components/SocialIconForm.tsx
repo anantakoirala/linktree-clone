@@ -9,11 +9,24 @@ import { ZodObject } from "zod";
 import { socialIconPlaceHolders } from "@/lib/placeHolder";
 import { Plus } from "lucide-react";
 import z from "zod";
+import { useSaveSocialIconMutation } from "@/redux/socialIcon/socialIconApi";
+import { handleApiError } from "@/lib/handleApiError";
+import toast from "react-hot-toast";
 
-type Props = { id: number };
+type Props = {
+  id: number;
+  setSocialIconsModalOpen: React.SetStateAction<any>;
+  socialIconsModalOpen: boolean;
+};
 
-const SocialIconForm = ({ id }: Props) => {
+const SocialIconForm = ({
+  id,
+  setSocialIconsModalOpen,
+  socialIconsModalOpen,
+}: Props) => {
   const [socialMedia, setSocialMedia] = useState<SocialIcon>();
+  const [saveSocialIcons, { isError, isLoading, isSuccess }] =
+    useSaveSocialIconMutation();
 
   useEffect(() => {
     const res = socialIcons.find((social) => social.id === id);
@@ -38,8 +51,17 @@ const SocialIconForm = ({ id }: Props) => {
   const placeholder =
     socialIconPlaceHolders[socialMedia?.name as SocialMediaName];
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log("data social", data);
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    try {
+      console.log("submitted data", data);
+      const result = await saveSocialIcons(data).unwrap(); // Extracts the raw response
+      toast.success(result.message);
+      setSocialIconsModalOpen(false);
+    } catch (error) {
+      // Handles any error from the mutation
+      console.error("Mutation error:", error);
+      handleApiError(error); // Your error handling function
+    }
   };
 
   return (

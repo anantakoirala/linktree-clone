@@ -10,9 +10,13 @@ export const handleApiError = (error: unknown): void => {
     const message = error.response?.data?.message || error.message;
 
     if (errorName === "ValidationError") {
-      error.response?.data?.errors.forEach((err: any) => {
-        toast.error(err.message);
-      });
+      if (error?.response?.data?.errors) {
+        error.response?.data?.errors.forEach((err: any) => {
+          toast.error(err.message);
+        });
+      } else {
+        toast.error(error?.response?.data?.message);
+      }
     } else {
       toast.error(message);
     }

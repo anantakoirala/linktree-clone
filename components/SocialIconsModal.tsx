@@ -9,17 +9,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronRightCircle,
-  Plus,
-  X,
-} from "lucide-react";
-import { socialIcons } from "@/lib/socialIcons";
+import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
 import { SocialIcon } from "@/types/SocialIcon";
 import GetSocialIcons from "./GetSocialIcons";
 import SocialIconForm from "./SocialIconForm";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { GoPencil } from "react-icons/go";
+import { Switch } from "@/components/ui/switch";
+import SocialIconEditDisplayList from "./adminPage/SocialIconEditDisplayList";
 
 type Props = {
   socialIconsModalOpen: boolean;
@@ -36,6 +34,8 @@ const SocialIconsModal = ({
   const [clickedSocialMediaId, setClickedSocialMediaId] = useState<number>(0);
   const [iconsSlectionViewOnDisplay, setIconsSelectionViewOnDisplay] =
     useState<boolean>(false);
+
+  const { socialIcons } = useSelector((state: RootState) => state.socialIcon);
 
   const closeModal = () => {
     setSocialIconsModalOpen(false);
@@ -59,9 +59,13 @@ const SocialIconsModal = ({
   };
 
   useEffect(() => {
-    console.log("clickedAddIconButton", clickedAddIconButton);
-    console.log("clickedSocialMediaId", clickedSocialMediaId);
-  }, [clickedAddIconButton, clickedSocialMediaId]);
+    console.log("socialIcons", socialIcons);
+  }, [socialIcons]);
+
+  // useEffect(() => {
+  //   console.log("clickedAddIconButton", clickedAddIconButton);
+  //   console.log("clickedSocialMediaId", clickedSocialMediaId);
+  // }, [clickedAddIconButton, clickedSocialMediaId]);
   return (
     <Dialog open={socialIconsModalOpen} onOpenChange={setSocialIconsModalOpen}>
       <DialogContent
@@ -97,7 +101,11 @@ const SocialIconsModal = ({
         </DialogHeader>
         {clickedSocialMediaId > 0 ? (
           <>
-            <SocialIconForm id={clickedSocialMediaId} />
+            <SocialIconForm
+              id={clickedSocialMediaId}
+              socialIconsModalOpen={socialIconsModalOpen}
+              setSocialIconsModalOpen={setSocialIconsModalOpen}
+            />
           </>
         ) : (
           <>
@@ -135,11 +143,10 @@ const SocialIconsModal = ({
               <>
                 <div className="w-full h-auto ">
                   {/* scrollable container */}
-                  <div className="w-full max-h-96 overflow-y-auto bg-orange-800">
-                    <div className="w-full h-16 bg-red-100"></div>
-                    <div className="w-full h-16 bg-green-200"></div>
-                    <div className="w-full h-16 bg-blue-200"></div>
-                    {/* Add more content here to make it scrollable */}
+                  <div className="w-full max-h-96 overflow-y-auto ">
+                    {socialIcons.map((social_icon: any, index: number) => (
+                      <SocialIconEditDisplayList social_icon={social_icon} />
+                    ))}
                   </div>
                   <div className="w-full h-auto flex flex-col mt-5">
                     <div className="flex flex-col items-start">

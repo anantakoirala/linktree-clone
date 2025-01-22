@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import { CiCirclePlus } from "react-icons/ci";
 
 import { z } from "zod";
+import { useLazyGetAllSocialIconsQuery } from "@/redux/socialIcon/socialIconApi";
+import SocialIconDisplayList from "@/components/adminPage/SocialIconDisplayList";
 
 type Props = {};
 
@@ -34,8 +36,15 @@ const Page = (props: Props) => {
   const { image, profile_title } = useSelector(
     (state: RootState) => state.profile
   );
-  const [createLink, { isError, isLoading, isSuccess }] =
-    useCreateLinkMutation();
+  const [
+    createLink,
+    {
+      isError: isCreateLinkError,
+      isLoading: isCreateLinkLoading,
+      isSuccess: isCreateLinkSuccess,
+    },
+  ] = useCreateLinkMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -59,6 +68,19 @@ const Page = (props: Props) => {
       handleApiError(error);
     }
   };
+
+  // Handle states separately
+  useEffect(() => {
+    if (isCreateLinkSuccess) {
+      console.log("Link created successfully!");
+      // Add your success handling logic here
+    }
+
+    if (isCreateLinkError) {
+      console.error("Failed to create link!");
+      // Add your error handling logic here
+    }
+  }, [isCreateLinkSuccess, isCreateLinkError]);
 
   return (
     <div className="flex ">
@@ -84,6 +106,7 @@ const Page = (props: Props) => {
               asdfadsf asdfasdf
             </div>
             <div className="w-full flex items-center  h-8 ">
+              <SocialIconDisplayList />
               <div className="w-7 h-7  rounded-full flex items-center justify-center">
                 <CiCirclePlus size={24} className="text-gray-500" />
               </div>

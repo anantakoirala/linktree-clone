@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const linkedinSchema = z.object({
+  name: z.string().default("Linkedin"),
   value: z
     .string()
     .url()

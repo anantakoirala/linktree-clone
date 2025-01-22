@@ -2,6 +2,7 @@
 import { useLazyGetAllLinksQuery } from "@/redux/link/linkApi";
 import { useLazyGetProfileQuery } from "@/redux/profile/profileApi";
 import { useLazyGetAllProductsQuery } from "@/redux/shop/shopApi";
+import { useLazyGetAllSocialIconsQuery } from "@/redux/socialIcon/socialIconApi";
 import React, { useEffect } from "react";
 
 type Props = {
@@ -16,6 +17,15 @@ const Layout = ({ children }: Props) => {
 
   const [getAllProducts] = useLazyGetAllProductsQuery();
 
+  const [
+    getAllSocialIcons,
+    {
+      isError: isGetAllIconsError,
+      isLoading: isGetAllIconsLoading,
+      isSuccess: isGetAllIconsSuccess,
+    },
+  ] = useLazyGetAllSocialIconsQuery();
+
   useEffect(() => {
     getProfile({});
   }, [getProfile]);
@@ -27,6 +37,22 @@ const Layout = ({ children }: Props) => {
   useEffect(() => {
     getAllProducts({});
   }, [getAllProducts]);
+
+  useEffect(() => {
+    getAllSocialIcons({});
+  }, [getAllSocialIcons]);
+
+  useEffect(() => {
+    if (isGetAllIconsSuccess) {
+      console.log("Fetched social icons successfully!");
+      // Add your success handling logic here
+    }
+
+    if (isGetAllIconsError) {
+      console.error("Failed to fetch social icons!");
+      // Add your error handling logic here
+    }
+  }, [isGetAllIconsSuccess, isGetAllIconsError]);
 
   return <div>{children}</div>;
 };

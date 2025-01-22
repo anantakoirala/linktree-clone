@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const facebookSchema = z.object({
+  name: z.string().default("Facebook"),
   value: z
     .string()
     .url()
