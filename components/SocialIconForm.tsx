@@ -1,7 +1,7 @@
 "use client";
-import { socialIcons } from "@/lib/socialIcons";
+import { ListedSocialIcons } from "@/lib/socialIcons";
 import { SocialIcon } from "@/types/SocialIcon";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SocialMediaName, socialMediaSchemas } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,11 @@ import z from "zod";
 import { useSaveSocialIconMutation } from "@/redux/socialIcon/socialIconApi";
 import { handleApiError } from "@/lib/handleApiError";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import {
+  setClickedSocialMediaId,
+  setIconsSelectionViewOnDisplay,
+} from "@/redux/socialIcon/socialIconSlice";
 
 type Props = {
   id: number;
@@ -24,12 +29,13 @@ const SocialIconForm = ({
   setSocialIconsModalOpen,
   socialIconsModalOpen,
 }: Props) => {
+  const dispatch = useDispatch();
   const [socialMedia, setSocialMedia] = useState<SocialIcon>();
   const [saveSocialIcons, { isError, isLoading, isSuccess }] =
     useSaveSocialIconMutation();
 
   useEffect(() => {
-    const res = socialIcons.find((social) => social.id === id);
+    const res = ListedSocialIcons.find((social) => social._id === id);
 
     setSocialMedia(res);
   }, [id]);
@@ -53,10 +59,12 @@ const SocialIconForm = ({
 
   const onSubmit = async (data: z.infer<typeof schema>) => {
     try {
-      console.log("submitted data", data);
       const result = await saveSocialIcons(data).unwrap(); // Extracts the raw response
+
       toast.success(result.message);
       setSocialIconsModalOpen(false);
+      dispatch(setClickedSocialMediaId(0));
+      dispatch(setIconsSelectionViewOnDisplay(false));
     } catch (error) {
       // Handles any error from the mutation
       console.error("Mutation error:", error);

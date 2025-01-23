@@ -107,9 +107,9 @@ const Page = (props: Props) => {
             </div>
             <div className="w-full flex items-center  h-8 ">
               <SocialIconDisplayList />
-              <div className="w-7 h-7  rounded-full flex items-center justify-center">
+              {/* <div className="w-7 h-7  rounded-full flex items-center justify-center">
                 <CiCirclePlus size={24} className="text-gray-500" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="w-[7%] h-full  flex items-center justify-center">

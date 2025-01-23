@@ -46,6 +46,24 @@ export const shopApi = api.injectEndpoints({
       },
       invalidatesTags: ["social"],
     }),
+    getSingleSocialIcon: builder.query({
+      query: (id) => {
+        return {
+          url: `/api/v1/socialicons/single-social-icon/${id}`,
+          method: "GET",
+        };
+      },
+    }),
+    updateSocialIcon: builder.mutation({
+      query: ({ id, data }) => {
+        return {
+          url: `/api/v1/socialicons/update-social-icon/${id}`,
+          method: "PATCH",
+          body: { data }, // Send the data object directly
+        };
+      },
+      invalidatesTags: ["social"],
+    }),
   }),
 });
 
@@ -54,4 +72,7 @@ export const {
   useGetAllSocialIconsQuery,
   useLazyGetAllSocialIconsQuery,
   useChangeSocialIconStatusMutation,
+  useGetSingleSocialIconQuery,
+  useLazyGetSingleSocialIconQuery,
+  useUpdateSocialIconMutation,
 } = shopApi;

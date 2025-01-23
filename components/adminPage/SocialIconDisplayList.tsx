@@ -10,13 +10,10 @@ type Props = {};
 const SocialIconDisplayList = (props: Props) => {
   const { socialIcons } = useSelector((state: RootState) => state.socialIcon);
 
-  useEffect(() => {
-    console.log("socialIcons", socialIcons);
-  }, [socialIcons]);
   return (
     <div className="flex flex-row h-auto w-auto">
       {socialIcons.slice(0, 4).map((social_icon: SocialIcon, index) => (
-        <div className="">
+        <div className="" key={index}>
           <GetSocialIcons name={social_icon.name} />
         </div>
       ))}

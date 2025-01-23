@@ -8,71 +8,71 @@ import { FaYoutube } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 
-export const socialIcons: SocialIcon[] = [
+export const ListedSocialIcons: SocialIcon[] = [
   {
-    id: 1,
+    _id: 1,
     name: "Instagram",
     displayName: "Instagram",
     icon: FaInstagram,
   },
   {
-    id: 2,
+    _id: 2,
     name: "X",
     displayName: "X",
     icon: FaXTwitter,
   },
   {
-    id: 3,
+    _id: 3,
     name: "TikTok",
     displayName: "TikTok",
     icon: FaTiktok,
   },
   {
-    id: 4,
+    _id: 4,
     name: "Facebook",
     displayName: "Facebook",
     icon: FaFacebook,
   },
   {
-    id: 5,
+    _id: 5,
     name: "YouTube",
     displayName: "YouTube",
     icon: FaYoutube,
   },
   {
-    id: 6,
+    _id: 6,
     name: "Github",
     displayName: "Github",
     icon: FaGithub,
   },
   {
-    id: 17,
+    _id: 17,
     name: "Phone",
     displayName: "Phone",
   },
   {
-    id: 8,
+    _id: 8,
     name: "Threads",
     displayName: "Threads",
   },
   {
-    id: 9,
+    _id: 9,
     name: "Email",
     displayName: "Email",
   },
 
   {
-    id: 10,
+    _id: 10,
     name: "Linkedin",
     displayName: "Linkedin",
   },
   {
-    id: 11,
+    _id: 11,
     name: "Spotify",
     displayName: "Spotify",
   },
   {
-    id: 12,
+    _id: 12,
     name: "PersonalWebsite",
     displayName: "Personal Website",
   },
