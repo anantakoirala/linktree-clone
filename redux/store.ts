@@ -5,6 +5,7 @@ import { linkSlice } from "./link/linkSlice";
 import { shopSlice } from "./shop/shopSlice";
 import { profileSlice } from "./profile/profileSlice";
 import { socialIconSlice } from "./socialIcon/socialIconSlice";
+import { settingSlice } from "./setting/settingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     [shopSlice.name]: shopSlice.reducer,
     [profileSlice.name]: profileSlice.reducer,
     [socialIconSlice.name]: socialIconSlice.reducer,
+    [settingSlice.name]: settingSlice.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>

@@ -7,7 +7,6 @@ type InitialState = {
   clickedSocialMediaId: number;
   iconsSlectionViewOnDisplay: boolean;
   editSocialIconId: number;
-  socialIconPosition: "Top" | "Bottom";
 };
 
 const initialState: InitialState = {
@@ -16,7 +15,6 @@ const initialState: InitialState = {
   clickedSocialMediaId: 0,
   iconsSlectionViewOnDisplay: false,
   editSocialIconId: 0,
-  socialIconPosition: "Top",
 };
 
 export const socialIconSlice = createSlice({
@@ -38,9 +36,6 @@ export const socialIconSlice = createSlice({
     setEditSocialIconId: (state, action) => {
       state.editSocialIconId = action.payload;
     },
-    setSocialIconPosition: (state, action) => {
-      state.socialIconPosition = action.payload;
-    },
   },
 });
 
@@ -50,7 +45,6 @@ export const {
   setClickedSocialMediaId,
   setIconsSelectionViewOnDisplay,
   setEditSocialIconId,
-  setSocialIconPosition,
 } = socialIconSlice.actions;
 
 export default socialIconSlice.reducer;

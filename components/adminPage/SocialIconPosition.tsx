@@ -4,39 +4,45 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useUpdateSettingMutation } from "@/redux/setting/settingApi";
+import { handleApiError } from "@/lib/handleApiError";
 
 type Props = {};
 
 const SocialIconPosition = (props: Props) => {
-  const { socialIconPosition } = useSelector(
-    (state: RootState) => state.socialIcon
+  const { social_icon_position } = useSelector(
+    (state: RootState) => state.setting
   );
-  const changeSocialIconPosition = (position: "Top" | "Bottom") => {
-    console.log("posiitn", position);
+  const [updateSetting, { isError, isLoading, isSuccess }] =
+    useUpdateSettingMutation();
+
+  const changeSocialIconPosition = async (position: "Top" | "Bottom") => {
+    try {
+      const result = await updateSetting({
+        social_icon_position: position,
+      }).unwrap();
+    } catch (error) {
+      handleApiError(error);
+    }
   };
-  useEffect(() => {
-    console.log("social icon position", socialIconPosition);
-  }, [socialIconPosition]);
+
   return (
     <RadioGroup
-      defaultValue={socialIconPosition}
+      defaultValue={social_icon_position}
       className="mt-5"
       onValueChange={(value) =>
         changeSocialIconPosition(value as "Top" | "Bottom")
       }
+      disabled={isLoading}
     >
       <div className="flex items-center space-x-2">
-        <RadioGroupItem
-          value={socialIconPosition}
-          id="r1"
-          className="w-6 h-6"
-        />
+        <RadioGroupItem value="Top" id="r1" className="w-6 h-6" />
         <Label htmlFor="r1" className="text-md ">
           Top
         </Label>
       </div>
       <div className="flex items-center space-x-2">
-        <RadioGroupItem value="bottom" id="r2" className="w-6 h-6" />
+        <RadioGroupItem value="Bottom" id="r2" className="w-6 h-6" />
         <Label htmlFor="r2" className="text-md ">
           Bottom
         </Label>

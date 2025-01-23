@@ -1,6 +1,7 @@
 "use client";
 import { useLazyGetAllLinksQuery } from "@/redux/link/linkApi";
 import { useLazyGetProfileQuery } from "@/redux/profile/profileApi";
+import { useLazyGetSettingQuery } from "@/redux/setting/settingApi";
 import { useLazyGetAllProductsQuery } from "@/redux/shop/shopApi";
 import { useLazyGetAllSocialIconsQuery } from "@/redux/socialIcon/socialIconApi";
 import React, { useEffect } from "react";
@@ -16,6 +17,8 @@ const Layout = ({ children }: Props) => {
   const [getProfile] = useLazyGetProfileQuery();
 
   const [getAllProducts] = useLazyGetAllProductsQuery();
+
+  const [getSetting] = useLazyGetSettingQuery();
 
   const [
     getAllSocialIcons,
@@ -41,6 +44,10 @@ const Layout = ({ children }: Props) => {
   useEffect(() => {
     getAllSocialIcons({});
   }, [getAllSocialIcons]);
+
+  useEffect(() => {
+    getSetting({});
+  }, [getSetting]);
 
   useEffect(() => {
     if (isGetAllIconsSuccess) {
