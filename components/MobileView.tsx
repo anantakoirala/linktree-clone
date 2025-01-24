@@ -4,20 +4,32 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { cn } from "@/lib/utils";
-import { AuthContext } from "@/contextprovider/AuthProvider";
-import { Theme } from "@/types/Theme";
+
 import LinkCard from "./LinkCard";
 import ProductCard from "./ProductCard";
+import { Product } from "@/types/Product";
 
 type Props = {};
 
 const MobileView = (props: Props) => {
   const { links } = useSelector((state: RootState) => state.link);
+
+  const [publishableProducts, setPublishableProducts] = useState<Product[]>([]);
   const { image, username, theme, profile_title, bio } = useSelector(
     (state: RootState) => state.profile
   );
   const { products } = useSelector((state: RootState) => state.shop);
+
+  useEffect(() => {
+    if (products) {
+      const publishableProducts = products.filter(
+        (product) => product.publish === true
+      );
+      if (publishableProducts) {
+        setPublishableProducts(publishableProducts);
+      }
+    }
+  }, [products]);
 
   return (
     <>
@@ -101,14 +113,16 @@ const MobileView = (props: Props) => {
                   <div className="w-full p-2">
                     <div className="w-full">
                       <div className="grid grid-cols-2 gap-x-0.5">
-                        {products.map((product: any, index: number) => (
-                          <ProductCard
-                            key={index}
-                            theme={theme}
-                            product={product}
-                            mobileView={true}
-                          />
-                        ))}
+                        {publishableProducts.map(
+                          (product: any, index: number) => (
+                            <ProductCard
+                              key={index}
+                              theme={theme}
+                              product={product}
+                              mobileView={true}
+                            />
+                          )
+                        )}
                       </div>
                     </div>
                   </div>

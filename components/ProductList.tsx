@@ -12,7 +12,10 @@ import { RiPencilLine } from "react-icons/ri";
 
 import { Switch } from "@/components/ui/switch";
 import React, { useState } from "react";
-import { useChangeProductStatusMutation } from "@/redux/shop/shopApi";
+import {
+  useChangeProductStatusMutation,
+  useDeleteProductMutation,
+} from "@/redux/shop/shopApi";
 import { handleApiError } from "@/lib/handleApiError";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -28,6 +31,7 @@ const ProductList = ({ product }: Props) => {
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
   const [isPublished, setIsPublished] = useState(product.publish);
   const [changeProductStatus] = useChangeProductStatusMutation();
+  const [deleteProductMutation] = useDeleteProductMutation();
 
   const handlePublishToggle = (id: string) => {
     try {
@@ -45,8 +49,14 @@ const ProductList = ({ product }: Props) => {
     }
   };
 
-  const deleteProduct = (product_id: string) => {
+  const deleteProduct = async (product_id: string) => {
     console.log("produt_id", product_id);
+    try {
+      const response = await deleteProductMutation(product_id).unwrap();
+      toast.success(response.message);
+    } catch (error) {
+      handleApiError(error);
+    }
   };
 
   const editShop = (id: string) => {
@@ -55,29 +65,29 @@ const ProductList = ({ product }: Props) => {
   };
   return (
     <>
-      <div className="w-full h-30 lg:h-40 flex flex-row rounded-md bg-white shadow-md p-2 cursor-pointer">
+      <div className="w-full h-28 lg:h-40 flex flex-row rounded-md bg-white shadow-md p-2 cursor-pointer">
         <div className="w-[30%] lg:w-[20%] rounded-md overflow-hidden relative group ">
-          <span className="relative flex shrink-0 overflow-hidden  size-28 lg:size-36 cursor-pointer ">
+          <span className="flex shrink-0 overflow-hidden  size-24 lg:size-36 cursor-pointer ">
             <img
               src={product.image}
               className="h-full w-full object-cover rounded-md"
               alt=""
             />
           </span>
-          <div className="w-full h-full absolute bg-slate-500 top-0 opacity-0 group-hover:opacity-100 bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300">
+          {/* <div className="w-full h-full absolute bg-slate-500 top-0 opacity-0 group-hover:opacity-100 bg-opacity-0 group-hover:bg-opacity-30 flex items-center justify-center transition-all duration-300">
             <div className="w-20 h-12 bg-black bg-opacity-45 rounded-full flex flex-row items-center justify-center gap-1 cursor-pointer">
               <RiPencilLine className="text-white font-bold" size={16} />
               <span className="font-bold text-white">Edit</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
-        <div className="w-[70%] lg:w-[80%] h-full flex flex-row rounded-r-md px-2 items-center">
+        <div className="w-[70%] lg:w-[80%] h-full flex flex-row rounded-r-md px-2 items-center ">
           <div
-            className="w-[80%] h-full px-5 py-2 flex flex-col  gap-2 "
+            className="w-[80%] h-full px-1 lg:px-5 py-1 lg:py-2 flex flex-col  gap-3 lg:gap-2 justify-between"
             onClick={() => editShop(product._id)}
           >
-            <div className="pb-[2px] line-clamp-2 h-10 leading-5 text-ellipsis ">
+            <div className="pb-[2px] line-clamp-2 text-[10px] lg:text-lg h-auto lg:leading-5 text-ellipsis ">
               {product.name}
             </div>
 

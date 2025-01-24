@@ -83,6 +83,16 @@ export const shopApi = api.injectEndpoints({
           body: { status }, // Send the data object directly
         };
       },
+      invalidatesTags: ["shop"],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/api/v1/shop/delete-product/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["shop"],
     }),
   }),
 });
@@ -96,4 +106,5 @@ export const {
   useCreateCustomProductMutation,
   useUpdateProductMutation,
   useChangeProductStatusMutation,
+  useDeleteProductMutation,
 } = shopApi;

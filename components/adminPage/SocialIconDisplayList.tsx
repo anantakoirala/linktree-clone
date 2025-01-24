@@ -12,7 +12,7 @@ const SocialIconDisplayList = (props: Props) => {
 
   return (
     <div className="flex flex-row h-auto w-auto">
-      {socialIcons.slice(0, 4).map((social_icon: SocialIcon, index) => (
+      {socialIcons.map((social_icon: SocialIcon, index) => (
         <div className="" key={index}>
           <GetSocialIcons name={social_icon.name} />
         </div>

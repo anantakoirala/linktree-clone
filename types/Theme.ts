@@ -12,4 +12,5 @@ export type Theme = {
   tabColor: string;
   selectedShareLinkBackgroundIndex: 0 | 1 | 2 | 3 | 4;
   shareLink_background: { background: string; textColor: string }[];
+  fill?: string;
 };

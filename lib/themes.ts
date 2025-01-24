@@ -44,6 +44,7 @@ export const themes: Theme[] = [
     embosedBoxColor: "bg-[#FFEB00]",
     tabColor: "bg-blue-600",
     selectedShareLinkBackgroundIndex: 0,
+    fill: "#FFEB00",
     shareLink_background: [
       { background: "bg-[#000957]", textColor: "text-black" }, // Deep blue - white text for contrast
       { background: "bg-[#344CB7]", textColor: "text-white" }, // Light blue - white text for readability
@@ -65,6 +66,7 @@ export const themes: Theme[] = [
     embosedBoxColor: "bg-yellow-800",
     tabColor: "bg-purple-400",
     selectedShareLinkBackgroundIndex: 0,
+    fill: "#FDBA74",
     shareLink_background: [
       { background: "bg-indigo-500", textColor: "text-white" }, // Deep indigo - white text for contrast
       { background: "bg-purple-500", textColor: "text-white" }, // Vibrant purple - white text for readability
@@ -106,6 +108,7 @@ export const themes: Theme[] = [
     embosedBox: true,
     embosedBoxColor: "bg-yellow-800",
     tabColor: "bg-red-500",
+    fill: "#EC4899",
     selectedShareLinkBackgroundIndex: 0,
     shareLink_background: [
       { background: "bg-orange-500", textColor: "text-black" }, // Bright orange - black text for contrast
@@ -211,6 +214,7 @@ export const themes: Theme[] = [
     embosedBox: true,
     embosedBoxColor: "bg-[#fa26a0]",
     tabColor: "bg-yellow-400",
+    fill: "#f51720",
     selectedShareLinkBackgroundIndex: 0,
     shareLink_background: [
       { background: "bg-[#f8d210]", textColor: "text-black" }, // Tropical yellow - black text for contrast

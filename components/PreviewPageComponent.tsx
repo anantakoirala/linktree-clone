@@ -29,6 +29,8 @@ import { cn } from "@/lib/utils";
 import LinkCard from "./LinkCard";
 import ProductCard from "./ProductCard";
 import { Ellipsis } from "lucide-react";
+import { SocialIcon } from "@/types/SocialIcon";
+import GetSocialIcons from "./GetSocialIcons";
 
 type Props = {};
 
@@ -39,6 +41,10 @@ const PreviewPageComponent = (props: Props) => {
   const [shareImage, setShareImage] = useState<string>("");
   const [user, setUser] = useState<User>();
   const [links, setLinks] = useState<LinkType[]>([]);
+  const [socialIcons, setSocialIcons] = useState<SocialIcon[]>([]);
+  const [setting, setSetting] = useState<{
+    social_icon_position: "Top" | "Bottom";
+  }>({ social_icon_position: "Top" });
   const [theme, setTheme] = useState<Theme>();
   const [products, setProducts] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,10 +63,10 @@ const PreviewPageComponent = (props: Props) => {
           setUser(res.data.user);
           setLinks(res.data.links);
           setTheme(res.data.user.theme);
-
+          setSocialIcons(res.data.userSocialLinks);
           setProducts(res.data.userProducts);
           setShareImage(res.data.shareImage);
-          console.log("products", res.data.shareImage);
+          setSetting(res.data.setting);
           setLoading(false);
         })
         .catch((error) => {
@@ -96,9 +102,13 @@ const PreviewPageComponent = (props: Props) => {
     setFullUrl(window.location.href);
   }, []);
 
+  useEffect(() => {
+    console.log("socialIcons", socialIcons);
+  }, [socialIcons]);
+
   return (
     <>
-      {loading || !user || !links.length || !theme ? (
+      {loading || !user || !theme ? (
         <div className="flex justify-center items-center w-full h-screen">
           <div className="loader">Loading Ananta...</div>{" "}
           {/* You can replace this with a spinner */}
@@ -120,7 +130,7 @@ const PreviewPageComponent = (props: Props) => {
           <div
             className={`w-full min-h-screen ${theme?.color}  bg-fixed font-poppins `}
           >
-            <div className="relative w-full md:w-[80%] lg:w-[40%]  min-h-screen  md:mx-auto flex flex-col pt-16 items-center pb-28">
+            <div className="relative w-full md:w-[80%] lg:w-[40%]  min-h-screen md:mx-auto flex flex-col pt-16 items-center pb-28 px-2">
               {/* Profile image */}
               <span className="relative flex shrink-0 overflow-hidden rounded-full size-24 lg:size-28 hover:size-32 transitionall duration-300 cursor-pointer mt-2  ">
                 <img
@@ -149,6 +159,22 @@ const PreviewPageComponent = (props: Props) => {
                 Lorem ipsum dolor sit, amet consectetur Lorem ipsum dolor sit,
                 amet
               </h2>
+
+              {setting && setting.social_icon_position === "Top" && (
+                <div className="w-[80%] h-auto flex flex-row flex-wrap gap-2 items-center justify-center mt-3">
+                  {socialIcons &&
+                    socialIcons.map(
+                      (social_icon: SocialIcon, index: number) => (
+                        <div className="">
+                          <GetSocialIcons
+                            name={social_icon.name}
+                            fill={theme.fill}
+                          />
+                        </div>
+                      )
+                    )}
+                </div>
+              )}
               {/* Tabs */}
               <div className="w-full flex items-center justify-center mt-6">
                 <Tabs defaultValue="account" className="w-full">
@@ -205,6 +231,27 @@ const PreviewPageComponent = (props: Props) => {
                 </Tabs>
               </div>
 
+              {/* Social Icon */}
+              {setting && setting.social_icon_position === "Bottom" && (
+                <div
+                  className={`w-[80%] h-auto flex flex-row flex-wrap gap-2 items-center justify-center ${
+                    links.length === 0 ? "mt-0" : "mt-6"
+                  }`}
+                >
+                  {socialIcons &&
+                    socialIcons.map(
+                      (social_icon: SocialIcon, index: number) => (
+                        <div className="">
+                          <GetSocialIcons
+                            name={social_icon.name}
+                            fill={theme.fill}
+                          />
+                        </div>
+                      )
+                    )}
+                </div>
+              )}
+
               {/* Share icon */}
 
               <div
@@ -213,7 +260,15 @@ const PreviewPageComponent = (props: Props) => {
                 } transition-opacity duration-300`}
                 onClick={() => setDialogOpen((prev) => !prev)}
               >
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-black bg-opacity-15">
+                <div
+                  className={`w-10 h-10 flex items-center justify-center rounded-full ${
+                    theme.embosedBox
+                      ? theme.embosedBoxColor
+                      : theme.boxColor
+                      ? theme.boxColor
+                      : "border"
+                  } bg-opacity-60`}
+                >
                   <Ellipsis />
                 </div>
               </div>

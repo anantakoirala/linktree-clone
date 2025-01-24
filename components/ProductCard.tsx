@@ -12,18 +12,18 @@ type Props = {
 
 const ProductCard = ({ theme, product, mobileView }: Props) => {
   return (
-    <Link href={"/"}>
+    <Link href={product.url ? product.url : ""} target="_blank">
       <div
         className={`relative ${
           mobileView ? "w-[calc(100%-5px)]" : "w-[calc(100%-15px)]"
-        } ${mobileView ? "h-44" : "h-96"} mx-auto mb-3`}
+        } ${mobileView ? "h-44" : "h-56 lg:h-96"} mx-auto mb-3`}
       >
         <div className="w-full h-full absoulte z-20">
           <div
             className={`flex flex-col items-center  relative ${
               theme?.shopBox
             } mx-auto z-20 ${theme?.boxColor} mt-2 ${
-              mobileView ? "p-1" : "p-4"
+              mobileView ? "p-1" : "p-1 lg:p-4"
             } h-full ${theme.hover} transition-all duration-150`}
           >
             {/* Image */}
@@ -47,8 +47,10 @@ const ProductCard = ({ theme, product, mobileView }: Props) => {
               {/* Name */}
               <div
                 className={`w-full h-[60%] text-center ${
-                  mobileView ? "text-[11px] mt-0.5 leading-3" : "text-lg mt-2"
-                } font-specialelite text-ellipsis overflow-hidden ${
+                  mobileView
+                    ? "text-[11px] mt-0.5 "
+                    : "text-[11px] lg:text-lg mt-0.5 lg:mt-2"
+                } font-specialelite  overflow-hidden ${
                   theme.text
                 }  line-clamp-2 font-normal `}
               >
@@ -70,7 +72,9 @@ const ProductCard = ({ theme, product, mobileView }: Props) => {
         {theme?.embosedBox && (
           <div
             className={`absolute ${
-              mobileView ? "top-[2px] left-0.5" : "top-[8px] left-1.5"
+              mobileView
+                ? "top-[2px] left-0.5"
+                : "top-[2px] left-0.5 lg:top-[8px] lg:left-1.5"
             }  z-10 w-full h-full ${theme?.shopBox} ${theme?.embosedBoxColor}`}
           ></div>
         )}

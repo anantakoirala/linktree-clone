@@ -14,33 +14,34 @@ import PersonalWebsite from "./svgIcons/PersonalWebsite";
 
 type Props = {
   name: string;
+  fill?: string;
 };
 
-const GetSocialIcons = ({ name }: Props) => {
+const GetSocialIcons = ({ name, fill }: Props) => {
   if (name === "Instagram") {
-    return <Instagram />;
+    return <Instagram fill={fill} />;
   } else if (name === "TikTok") {
-    return <TikTok />;
+    return <TikTok fill={fill} />;
   } else if (name === "X") {
-    return <X />;
+    return <X fill={fill} />;
   } else if (name === "YouTube") {
-    return <YouTube />;
+    return <YouTube fill={fill} />;
   } else if (name === "Facebook") {
-    return <Facebook />;
+    return <Facebook fill={fill} />;
   } else if (name === "Github") {
-    return <Github />;
+    return <Github fill={fill} />;
   } else if (name === "Linkedin") {
-    return <LinkedIn />;
+    return <LinkedIn fill={fill} />;
   } else if (name === "Threads") {
-    return <Threads />;
+    return <Threads fill={fill} />;
   } else if (name === "Email") {
-    return <Email />;
+    return <Email fill={fill} />;
   } else if (name === "Phone") {
-    return <Phone />;
+    return <Phone fill={fill} />;
   } else if (name === "Spotify") {
-    return <Spotify />;
+    return <Spotify fill={fill} />;
   } else if (name === "PersonalWebsite") {
-    return <PersonalWebsite />;
+    return <PersonalWebsite fill={fill} />;
   } else {
     return <div>notfound</div>;
   }

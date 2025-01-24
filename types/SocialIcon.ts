@@ -5,4 +5,5 @@ export type SocialIcon = {
   displayName: string;
   icon?: IconType;
   value?: string;
+  publish?: boolean;
 };

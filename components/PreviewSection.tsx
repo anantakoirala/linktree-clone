@@ -1,111 +1,106 @@
 "use client";
+import { RootState } from "@/redux/store";
 import { X } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link as LinkType } from "@/types/Link";
+import LinkCard from "./LinkCard";
+import ProductCard from "./ProductCard";
 
 type Props = {};
-const dummyLink = [
-  {
-    id: 1,
-    name: "youtube channel",
-    url: "https://www.youtube.com/watch?v=NtsbjB8QD3Y&t=3981s&ab_channel=JohnWeeksDev",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 2,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 3,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 4,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 5,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 6,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 7,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 8,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 9,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 10,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-  {
-    id: 11,
-    name: "facebook",
-    url: "https://www.facebook.com",
-    image: "https://picsum.photos/id/8/300/200",
-  },
-];
 
 const PreviewSection = (props: Props) => {
+  const { links } = useSelector((state: RootState) => state.link);
+  const { image, username, theme, profile_title, bio } = useSelector(
+    (state: RootState) => state.profile
+  );
+  const { products } = useSelector((state: RootState) => state.shop);
   return (
-    <div className="md:hidden fixed bg-red-300 z-30 top-0 h-full w-full overflow-auto">
-      <div className="h-full mx-auto w-full overflow-auto z-20">
-        <img
-          src="https://picsum.photos/id/8/300/320"
-          alt=""
-          className="rounded-full min-w-[60px] w-[60px] mx-auto mt-8"
-        />
-        <div className="text-center text-sm font-semibold mt-4 break-words">
-          @ananta
-        </div>
-        <div className="text-center text-[8px] font-semibold mt-2">
-          <div className="px-8 break-words">this is bio</div>
-        </div>
-        {dummyLink.map((link: any) => (
-          <a
-            key={link.id}
-            href={link.url}
-            target="_blank"
-            className="flex items-center relative w-[calc(100%-15px)] mx-auto border bg-white mt-2 p-1 rounded-xl z-20"
-          >
+    <div
+      className={`md:hidden fixed ${theme?.color} z-30 top-0 h-full w-full overflow-auto`}
+    >
+      <div className="h-full mx-auto w-full overflow-auto z-10 relative">
+        {/* Profile Image */}
+        <div className="flex items-center justify-center mt-10">
+          <span className="relative flex shrink-0 overflow-hidden rounded-full size-20 cursor-pointer ">
             <img
-              src={link.image}
+              src={image ? image : "/unnamed.png"}
+              className="h-full w-full object-cover"
               alt=""
-              className="rounded-lg h-[30px] aspect-square"
             />
-            <div className="absolute w-full">
-              <div className="max-w-[70%] w-full mx-auto text-[14px] text-center">
-                {link.name}
+          </span>
+        </div>
+        {/* Username */}
+        <div
+          className={`text-center text-sm font-semibold mt-2 break-words ${theme?.text}`}
+        >
+          @{profile_title}
+        </div>
+        {/* Bio */}
+        <div
+          className={`text-center text-[8px] font-semibold mt-1 ${theme?.text}`}
+        >
+          <div className="px-8 break-words">{bio}</div>
+        </div>
+
+        {/* Tabs */}
+        <div className="w-full flex items-center justify-center mt-2">
+          <Tabs defaultValue="account" className="w-full">
+            <TabsList className="flex justify-center w-fit mx-auto rounded-full mb-4">
+              <TabsTrigger
+                value="account"
+                className={`
+                      flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200 data-[state=active]:bg-[#8228D9] data-[state=active]:text-white data-[state=inactive]:text-gray-700`}
+              >
+                Links
+              </TabsTrigger>
+              <TabsTrigger
+                value="password"
+                className={
+                  "flex-1 px-4 py-2 text-center text-sm font-medium rounded-full transition-all duration-200 data-[state=active]:bg-[#8228D9] data-[state=active]:text-white data-[state=inactive]:text-gray-700"
+                }
+              >
+                Shop
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="account" className="">
+              {/* Links */}
+              <div className="w-full">
+                {links.map((link: LinkType, index) => (
+                  <React.Fragment key={index}>
+                    <LinkCard
+                      theme={theme}
+                      index={index}
+                      mobileView={true}
+                      link={link}
+                    />
+                  </React.Fragment>
+                ))}
               </div>
-            </div>
-          </a>
-        ))}
+            </TabsContent>
+            <TabsContent value="password">
+              <div className="w-full p-2">
+                <div className="w-full">
+                  <div className="grid grid-cols-2 gap-x-0.5">
+                    {products.map((product: any, index: number) => (
+                      <ProductCard
+                        key={index}
+                        theme={theme}
+                        product={product}
+                        mobileView={false}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Links */}
+
+        {/* Extra padding for spacing */}
         <div className="pb-12"></div>
       </div>
       <div className="fixed bottom-16 w-full flex items-center justify-center z-50">

@@ -1,8 +1,11 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  fill?: string;
+};
 
-const X = (props: Props) => {
+const X = ({ fill }: Props) => {
+  console.log("x fill", fill);
   return (
     <svg
       width="24"
@@ -16,7 +19,7 @@ const X = (props: Props) => {
       aria-labelledby=" "
     >
       <path
-        fill="currentColor"
+        fill={fill ? fill : "currentColor"}
         fillRule="evenodd"
         d="m20.9 3-.8-.7-6.5 7.4-5.1-7.2H3L10.6 13l-7.1 8 .7.7 7-7.9 5.6 7.7H22l-8-11L21 3ZM5 3.5l12.2 17h2.9L7.9 3.5H5.1Z"
       ></path>
