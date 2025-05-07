@@ -5,4 +5,5 @@ export type Link = {
   image: string;
   createdAt: string;
   updatedAt: string;
+  publish: boolean;
 };

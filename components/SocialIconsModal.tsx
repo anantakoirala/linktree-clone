@@ -24,19 +24,20 @@ import {
 } from "@/redux/socialIcon/socialIconSlice";
 import EditSocialIconModal from "./adminPage/EditSocialIconModal";
 import SocialIconPosition from "./adminPage/SocialIconPosition";
+import { closeSocialIconsModal } from "@/redux/link/linkSlice";
 
 type Props = {
-  socialIconsModalOpen: boolean;
   setSocialIconsModalOpen: React.SetStateAction<any>;
 };
 
-const SocialIconsModal = ({
-  socialIconsModalOpen,
-  setSocialIconsModalOpen,
-}: Props) => {
+const SocialIconsModal = ({ setSocialIconsModalOpen }: Props) => {
   const dispatch = useDispatch();
   const [remainingIcons, setRemainingIcons] = useState<SocialIcon[]>([]);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
+
+  const { socialIconsModalOpen } = useSelector(
+    (state: RootState) => state.link
+  );
   const {
     socialIcons,
     clickedAddIconButton,
@@ -45,7 +46,7 @@ const SocialIconsModal = ({
   } = useSelector((state: RootState) => state.socialIcon);
 
   const closeModal = () => {
-    setSocialIconsModalOpen(false);
+    dispatch(closeSocialIconsModal());
     dispatch(setClickedSocialMediaId(0));
     dispatch(setClickedAddIconButton(false));
     dispatch(setIconsSelectionViewOnDisplay(false));
@@ -76,10 +77,7 @@ const SocialIconsModal = ({
 
   return (
     <>
-      <Dialog
-        open={socialIconsModalOpen}
-        onOpenChange={setSocialIconsModalOpen}
-      >
+      <Dialog open={socialIconsModalOpen}>
         <DialogContent
           className="[&>button]:hidden"
           onEscapeKeyDown={(event) => event.preventDefault()}
@@ -157,7 +155,7 @@ const SocialIconsModal = ({
                 <>
                   <div className="w-full h-auto ">
                     {/* scrollable container */}
-                    <div className="w-full max-h-96 overflow-y-auto ">
+                    <div className="w-full max-h-96 md:max-h-72 overflow-y-auto ">
                       {socialIcons.map((social_icon: any, index: number) => (
                         <React.Fragment key={index}>
                           <SocialIconEditDisplayList
@@ -172,13 +170,15 @@ const SocialIconsModal = ({
                     <div className="w-full h-auto flex flex-col mt-5">
                       <div className="flex flex-col items-start">
                         <span className="font-bold text-black text-[18px]">
-                          Show visitors where to find you
+                          Social icon position
                         </span>
                         <span className="text-sm leading-[1.25rem] text-muted-foreground">
                           Display icons at the top or bottom of your profile
                         </span>
                         {/* Radio */}
-                        <SocialIconPosition />
+                        <div className="mt-4">
+                          <SocialIconPosition />
+                        </div>
 
                         <button
                           className="w-full mt-5 rounded-full h-12 bg-[#8228D9] hover:bg-[#6c21b3] text-white flex text-[17px] font-semibold items-center justify-center flex-row"

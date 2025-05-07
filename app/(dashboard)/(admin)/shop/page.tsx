@@ -26,14 +26,14 @@ const Page = (props: Props) => {
             value="account"
             className="data-[state=active]:border-b-2 data-[state=active]:border-[#8228D9] data-[state=active]:text-[#8228D9]"
           >
-            Edit
+            Products
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="password"
             className="data-[state=active]:border-b-2 data-[state=active]:border-[#8228D9] data-[state=active]:text-[#8228D9]"
           >
             My Products
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="account" className="w-full   mt-5">
           <div className="w-full flex flex-col">
@@ -53,9 +53,9 @@ const Page = (props: Props) => {
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="password" className="w-full bg-yellow-200 mt-5">
+        {/* <TabsContent value="password" className="w-full bg-yellow-200 mt-5">
           Change your password here.
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
       {open && <AddProductModal open={open} setOpen={setOpen} />}
     </>

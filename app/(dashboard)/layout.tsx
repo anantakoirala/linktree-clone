@@ -4,7 +4,7 @@ import MobileView from "@/components/MobileView";
 import PreviewSection from "@/components/PreviewSection";
 import AuthProvider from "@/contextprovider/AuthProvider";
 import { store } from "@/redux/store";
-import { Eye, LogOut } from "lucide-react";
+import { Eye, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -117,7 +117,10 @@ const layout = ({ children }: Props) => {
               </div>
             </div>
           </div>
-          <div className="h-screen w-full md:w-3/6 px-6 py-10 overflow-y-scroll">
+          <div className="h-screen w-full md:w-3/6 px-6 py-10 overflow-y-scroll relative">
+            <div className="absolute right-2 top-4 w-7 h-7 bg-white hover:bg-gray-50 shadow-sm rounded-sm flex items-center justify-center">
+              <Settings className="w-4 h-4" />
+            </div>
             {children}
           </div>
           {/* Mobile view */}

@@ -15,7 +15,7 @@ import { SocialMediaName, socialMediaSchemas } from "@/schema";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { socialIconPlaceHolders } from "@/lib/placeHolder";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import {
   useLazyGetSingleSocialIconQuery,
   useUpdateSocialIconMutation,
@@ -136,8 +136,8 @@ const EditSocialIconModal = ({ editModalOpen, setEditModalOpen }: Props) => {
               type="submit"
               disabled={isLoading}
             >
-              <Plus size={25} className="mr-0.5 font-thin" />
-              <span> Add social icon</span>
+              <Pencil size={25} className="mr-0.5 font-thin" />
+              <span> Edit</span>
             </button>
           </form>
         )}

@@ -26,11 +26,19 @@ const LinkCard = ({ theme, index, mobileView, link }: Props) => {
                 theme?.linkStyle
               } ${mobileView ? "size-8" : "size-12"} cursor-pointer `}
             >
-              <img
-                src={"/placeholder.jpg"}
-                className="h-full w-full object-cover"
-                alt=""
-              />
+              {link.image ? (
+                <img
+                  src={link.image}
+                  className="h-full w-full object-cover"
+                  alt=""
+                />
+              ) : (
+                <img
+                  src={"/placeholder.jpg"}
+                  className="h-full w-full object-cover"
+                  alt=""
+                />
+              )}
             </span>
           </div>
           <div className="w-[60%] h-full flex items-center ">

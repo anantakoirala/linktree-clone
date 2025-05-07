@@ -8,7 +8,7 @@ type Props = {
 
 const Instagram = ({ fill }: Props) => {
   const isLargeScreen = useMediaQuery("(min-width:640px)");
-  console.log("islargescsreen", isLargeScreen);
+
   return (
     <svg
       width="24"

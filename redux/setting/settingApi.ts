@@ -1,5 +1,5 @@
 import { api } from "../api";
-import { setSocialIconPosition } from "./settingSlice";
+import { setIconPosition, setShopStatus } from "./settingSlice";
 
 export const settingApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,9 +14,8 @@ export const settingApi = api.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          dispatch(
-            setSocialIconPosition(result.data.setting.social_icon_position)
-          );
+          console.log("result", result.data.setting.social_icon_position);
+          // dispatch(setIconPosition(result.data.setting.social_icon_position));
         } catch (error) {
           console.log("updated error");
           console.log(error);
@@ -33,9 +32,9 @@ export const settingApi = api.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          dispatch(
-            setSocialIconPosition(result.data.setting.social_icon_position)
-          );
+          console.log("result", result.data);
+          dispatch(setIconPosition(result.data.setting.social_icon_position));
+          dispatch(setShopStatus(result.data.setting.shopStatus));
         } catch (error: any) {
           console.log("updated error");
           console.log(error);

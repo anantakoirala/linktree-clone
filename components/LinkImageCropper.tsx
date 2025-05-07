@@ -1,5 +1,11 @@
 "use client";
-import React, { SyntheticEvent, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  SyntheticEvent,
+  useRef,
+  useState,
+} from "react";
 import {
   Dialog,
   DialogClose,
@@ -22,6 +28,8 @@ import { generateRandomString } from "@/lib/generateRandomStrings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import "react-image-crop/dist/ReactCrop.css";
+import { Link } from "@/types/Link";
+import { useSaveImageLinkMutation } from "@/redux/link/linkApi";
 
 type Props = {
   open: boolean;
@@ -31,9 +39,11 @@ type Props = {
   uploadProfileImage?: any;
   fileName: string;
   setFileName: React.SetStateAction<any>;
+  link: Link;
+  setIsImage: Dispatch<SetStateAction<boolean>>;
 };
 
-const ImageCropper1 = ({
+const LinkImageCropper = ({
   open,
   setOpen,
   croppedImageUrl,
@@ -41,6 +51,8 @@ const ImageCropper1 = ({
   uploadProfileImage,
   fileName,
   setFileName,
+  link,
+  setIsImage,
 }: Props) => {
   const aspect = 1;
 
@@ -52,7 +64,7 @@ const ImageCropper1 = ({
   const imageInputRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
 
-  const { _id } = useSelector((state: RootState) => state.profile);
+  const [saveImage, { isLoading }] = useSaveImageLinkMutation();
 
   const closeModal = () => {
     setOpen(false);
@@ -88,11 +100,28 @@ const ImageCropper1 = ({
 
   async function onCrop() {
     try {
+      if (!croppedImageUrl) {
+        alert("Please select and crop an image first.");
+        return;
+      }
+      console.log("hello");
+      const response = await fetch(croppedImageUrl);
+      const blob = await response.blob();
+      const newfile = new File([blob], fileName, { type: blob.type });
+
+      const formData = new FormData();
+      formData.append("file", newfile);
+      formData.append("_id", link._id);
+
+      await saveImage(formData).unwrap();
+
       setCroppedImage(croppedImageUrl);
       setOpen(false);
       setImgSrc("");
       setHasMovedCrop(false);
+      setIsImage(false);
     } catch (error) {
+      console.log("error", error);
       alert("Something went wrong!");
     }
   }
@@ -232,7 +261,7 @@ const ImageCropper1 = ({
   );
 };
 
-export default ImageCropper1;
+export default LinkImageCropper;
 
 export function centerAspectCrop(
   mediaWidth: number,

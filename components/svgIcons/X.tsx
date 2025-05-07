@@ -5,7 +5,6 @@ type Props = {
 };
 
 const X = ({ fill }: Props) => {
-  console.log("x fill", fill);
   return (
     <svg
       width="24"

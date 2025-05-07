@@ -87,7 +87,8 @@ const Page = (props: Props) => {
       {/* add link button */}
 
       <div className="flex flex-col w-full">
-        <div className="w-full h-20 lg:h-28 mb-2 flex flex-row">
+        <div className="w-full h-[90px] lg:h-28 mb-2 flex flex-row gap-2 ">
+          {/* Image */}
           <div className="w-[12%] lg:w-[10%] h-full flex items-center justify-start ">
             <span className="relative flex shrink-0 overflow-hidden rounded-full  size-12  lg:w-[4.5rem] lg:h-[4.5rem] cursor-pointer ">
               <img
@@ -97,7 +98,8 @@ const Page = (props: Props) => {
               />
             </span>
           </div>
-          <div className="w-[86%] lg:w-[88%] h-full px-2 py-3 mb-4">
+          {/* Bio and title and social icons*/}
+          <div className="w-[75%] lg:w-[80%] h-full px-2 py-3 mb-4  flex flex-col gap-0.5">
             <div className="w-full font-semibold tracking-tight text-[12px] lg:text-[15px] text-left">
               {profile_title}
             </div>
@@ -105,14 +107,11 @@ const Page = (props: Props) => {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus
               asdfadsf asdfasdf
             </div>
-            <div className="w-full flex items-center  h-8 ">
+            <div className="w-full flex items-center ">
               <SocialIconDisplayList />
-              {/* <div className="w-7 h-7  rounded-full flex items-center justify-center">
-                <CiCirclePlus size={24} className="text-gray-500" />
-              </div> */}
             </div>
           </div>
-          <div className="w-[7%] h-full  flex items-center justify-center">
+          <div className="w-[7%] lg:w-[7%] h-full  flex items-center justify-center ">
             <AdminDropDownMenu />
           </div>
         </div>

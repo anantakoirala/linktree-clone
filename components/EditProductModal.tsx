@@ -105,6 +105,10 @@ const EditProductModal = ({ editModalOpen, setEditModalOpen }: Props) => {
     }
   }, [products, shop_edit_id]);
 
+  useEffect(() => {
+    console.log("croppedImageUrl edit  odal", croppedImageUrl);
+  }, [croppedImageUrl]);
+
   return (
     <>
       <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>

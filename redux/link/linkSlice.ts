@@ -5,12 +5,14 @@ type initialState = {
   links: Link[];
   idForNameEdit: string;
   idForUrlEdit: string;
+  socialIconsModalOpen: boolean;
 };
 
 const initialState: initialState = {
   links: [],
   idForNameEdit: "",
   idForUrlEdit: "",
+  socialIconsModalOpen: false,
 };
 
 export const linkSlice = createSlice({
@@ -28,9 +30,20 @@ export const linkSlice = createSlice({
       state.idForUrlEdit = action.payload;
       state.idForNameEdit = "";
     },
+    openSocialIconsModal: (state) => {
+      state.socialIconsModalOpen = true;
+    },
+    closeSocialIconsModal: (state) => {
+      state.socialIconsModalOpen = false;
+    },
   },
 });
 
-export const { setLinks, setIdForNameEdit, setIdForUrlEdit } =
-  linkSlice.actions;
+export const {
+  setLinks,
+  setIdForNameEdit,
+  setIdForUrlEdit,
+  openSocialIconsModal,
+  closeSocialIconsModal,
+} = linkSlice.actions;
 export default linkSlice.reducer;

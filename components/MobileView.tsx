@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import LinkCard from "./LinkCard";
 import ProductCard from "./ProductCard";
 import { Product } from "@/types/Product";
+import { SocialIcon } from "@/types/SocialIcon";
+import GetSocialIcons from "./GetSocialIcons";
 
 type Props = {};
 
@@ -19,6 +21,11 @@ const MobileView = (props: Props) => {
     (state: RootState) => state.profile
   );
   const { products } = useSelector((state: RootState) => state.shop);
+  const { social_icon_position } = useSelector(
+    (state: RootState) => state.setting
+  );
+
+  const { socialIcons } = useSelector((state: RootState) => state.socialIcon);
 
   useEffect(() => {
     if (products) {
@@ -73,6 +80,23 @@ const MobileView = (props: Props) => {
             >
               <div className="px-8 break-words">{bio}</div>
             </div>
+            {social_icon_position === "Top" && (
+              <div className="w-[80%] m-auto h-auto flex flex-row flex-wrap gap-0.5 items-center justify-center mt-1.5 ">
+                {socialIcons &&
+                  socialIcons
+                    .filter(
+                      (social_icon: SocialIcon) => social_icon.publish === true
+                    ) // Filter for published social icons
+                    .map((social_icon: SocialIcon, index: number) => (
+                      <div key={index}>
+                        <GetSocialIcons
+                          name={social_icon.name}
+                          fill={theme.fill}
+                        />
+                      </div>
+                    ))}
+              </div>
+            )}
 
             {/* Tabs */}
             <div className="w-full flex items-center justify-center mt-2">
@@ -130,7 +154,24 @@ const MobileView = (props: Props) => {
               </Tabs>
             </div>
 
-            {/* Links */}
+            {/* Social Icons */}
+            {social_icon_position === "Bottom" && (
+              <div className="w-[80%] m-auto h-auto flex flex-row flex-wrap gap-0.5 items-center justify-center mt-1.5 ">
+                {socialIcons &&
+                  socialIcons
+                    .filter(
+                      (social_icon: SocialIcon) => social_icon.publish === true
+                    ) // Filter for published social icons
+                    .map((social_icon: SocialIcon, index: number) => (
+                      <div key={index}>
+                        <GetSocialIcons
+                          name={social_icon.name}
+                          fill={theme.fill}
+                        />
+                      </div>
+                    ))}
+              </div>
+            )}
 
             {/* Extra padding for spacing */}
             <div className="pb-12"></div>

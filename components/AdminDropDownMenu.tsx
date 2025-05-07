@@ -13,10 +13,14 @@ import ImageCropper1 from "./ImageCropper1";
 import { useUploadProfileImageMutation } from "@/redux/profile/profileApi";
 import DisplayNameAndBioModal from "./DisplayNameAndBioModal";
 import SocialIconsModal from "./SocialIconsModal";
+import { useDispatch } from "react-redux";
+import { openSocialIconsModal } from "@/redux/link/linkSlice";
+import ProfileImageCropper from "./ProfileImageCropper";
 
 type Props = {};
 
 const AdminDropDownMenu = (props: Props) => {
+  const dispatch = useDispatch();
   const [imageCropperOpen, setImageCropperOpen] = useState<boolean>(false);
   const [editDisplayAndBioModalOpen, setEditDispalyAndBioModalOpen] =
     useState<boolean>(false);
@@ -31,7 +35,7 @@ const AdminDropDownMenu = (props: Props) => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className="ring-offset-0 focus:outline-none ">
-          <div className="w-10 lg:w-12 h-10 lg:h-12 rounded-full flex items-center justify-center bg-gray-200 cursor-pointer">
+          <div className="w-9 lg:w-12 h-9 lg:h-12 rounded-full flex items-center justify-center bg-gray-200 cursor-pointer">
             <Ellipsis />
           </div>
         </DropdownMenuTrigger>
@@ -79,7 +83,9 @@ const AdminDropDownMenu = (props: Props) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="rounded-3xl font-bold h-12 text-[15px]"
-            onClick={() => setSocialIconsModalOpen((prev) => !prev)}
+            onClick={() => {
+              dispatch(openSocialIconsModal());
+            }}
           >
             <svg
               width="16"
@@ -101,7 +107,7 @@ const AdminDropDownMenu = (props: Props) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <ImageCropper1
+      <ProfileImageCropper
         open={imageCropperOpen}
         setOpen={setImageCropperOpen}
         croppedImageUrl={croppedImageUrl}
@@ -110,14 +116,12 @@ const AdminDropDownMenu = (props: Props) => {
         setFileName={setFileName}
         uploadProfileImage={uploadProfileImage}
       />
+
       <DisplayNameAndBioModal
         editDisplayAndBioModalOpen={editDisplayAndBioModalOpen}
         setEditDispalyAndBioModalOpen={setEditDispalyAndBioModalOpen}
       />
-      <SocialIconsModal
-        socialIconsModalOpen={socialIconsModalOpen}
-        setSocialIconsModalOpen={setSocialIconsModalOpen}
-      />
+      <SocialIconsModal setSocialIconsModalOpen={setSocialIconsModalOpen} />
     </>
   );
 };

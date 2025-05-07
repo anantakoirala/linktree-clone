@@ -61,7 +61,7 @@ const Layout = ({ children }: Props) => {
     }
   }, [isGetAllIconsSuccess, isGetAllIconsError]);
 
-  return <div>{children}</div>;
+  return <div className="relative">{children}</div>;
 };
 
 export default Layout;

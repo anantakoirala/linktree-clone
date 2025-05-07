@@ -46,7 +46,11 @@ const DisplayNameAndBioModal = ({
     formState: { errors },
     register,
     reset,
+    watch,
   } = form;
+
+  const bioValue = watch("bio") || "";
+  const profileTitleValue = watch("profile_title") || "";
 
   const submitData = (data: z.infer<typeof formSchema>) => {
     console.log("data", data);
@@ -93,7 +97,7 @@ const DisplayNameAndBioModal = ({
               {...register("profile_title")}
             />
             <div className="flex items-center justify-end text-[#676B5F] text-[13px]">
-              {`0 / 30`}
+              {`${profileTitleValue.length} / 30`}
             </div>
             {errors && errors?.profile_title && (
               <span className="bg-red-700 text-sm">
@@ -108,7 +112,7 @@ const DisplayNameAndBioModal = ({
               {...register("bio")}
             ></textarea>
             <div className="flex items-center justify-end text-[#676B5F] text-[13px]">
-              biolength/80
+              {`${bioValue.length} / 80`}
             </div>
             {errors && errors?.bio && (
               <span className="bg-red-700 text-sm">{errors?.bio?.message}</span>
