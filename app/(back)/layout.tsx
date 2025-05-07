@@ -9,7 +9,13 @@ type Props = {
 };
 
 const layout = ({ children }: Props) => {
-  return <div>{children}</div>;
+  return (
+    <Provider store={store}>
+      <AuthProvider>
+        <div>{children}</div>
+      </AuthProvider>
+    </Provider>
+  );
 };
 
 export default layout;
